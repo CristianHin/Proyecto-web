@@ -1,0 +1,18 @@
+.login{
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+}
+
+.login img{
+    width: 240px;
+}
+
+h1{
+    color: #1176ae;
+}
