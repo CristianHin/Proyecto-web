@@ -7,19 +7,22 @@ const RespuestaGoogle = (respuesta) =>{
 }
 
 const Login = () => {
-  return <div className="login">
-    <img src={logo} alt=""></img>
-    <h1>Ingresar</h1>
-    
-    <GoogleLogin
-      clientId="404246774425-re4of1e59glskmhntem3t8hk8uthdm42.apps.googleusercontent.com"
-      buttonText="Login"
-      onSuccess={RespuestaGoogle}
-      onFailure={RespuestaGoogle}
-      cookiePolicy={'single_host_origin'}
-    />
-
-  </div>
+  return (
+    <section className="login-container">
+      <div className="login">
+        <img src={logo} alt=""></img>
+        <h1>Ingresar</h1>
+        
+        <GoogleLogin
+          clientId="404246774425-re4of1e59glskmhntem3t8hk8uthdm42.apps.googleusercontent.com"
+          buttonText="Login"
+          onSuccess={RespuestaGoogle}
+          onFailure={RespuestaGoogle}
+          cookiePolicy={'single_host_origin'}
+        />
+      </div>
+    </section>
+  )
 }
 
 export default Login;
