@@ -4,6 +4,7 @@ import "./App.css";
 import Login from "./../Login/Login";
 import NavigationMenu from "../includes/NavigationMenu";
 import ListadoVentas from "../Ventas/ListadoVentas";
+import CrearVenta from '../Ventas/CrearVenta';
 
 const App = () => {
     return (
@@ -12,7 +13,8 @@ const App = () => {
           {/* <NavigationMenu /> */}
           <Switch>
             <Route path="/login" exact component={ Login }></Route>
-            <Route path="/ventas" exat component={ ListadoVentas }></Route>
+            <Route path="/ventas" exact component={ ListadoVentas }></Route>
+            <Route path="/ventas/crear" exact component={ CrearVenta }></Route>
           </Switch>
         </Router>
       </div>

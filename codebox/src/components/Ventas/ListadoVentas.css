@@ -93,6 +93,10 @@
     background-color: #e59500;
 }
 
+.button-add {
+    background-color: #23967f;
+}
+
 .button svg {
     width: 1rem;
     margin-right: .25rem;
@@ -108,6 +112,7 @@
 
 .card-body table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
 }
 
@@ -130,6 +135,10 @@
     font-family: 'Mukta Vaani', sans-serif;
     font-size: 0.75rem;
     line-height: 1rem;
+}
+
+.card-body table td svg {
+    height: 1rem;
 }
 
 .card-body .tag-status {
