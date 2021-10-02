@@ -6,7 +6,7 @@ import './ListadoVentas.css';
 const ListadoVentas = () => {
     return ( 
         <Fragment>
-            <NavigationMenu />
+        
             <section className="main-container">
                 <div className="cards">
                     <div className="card card-caption">

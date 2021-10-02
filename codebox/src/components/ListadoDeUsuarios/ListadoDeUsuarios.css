@@ -1,0 +1,10 @@
+.contenedor{
+    background-color: #fff;
+    max-width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-left: 20px ;
+    
+}
