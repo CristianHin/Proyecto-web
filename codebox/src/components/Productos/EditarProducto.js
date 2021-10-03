@@ -1,21 +1,17 @@
 import { Fragment } from 'react';
 import './AgregarProducto.css'
 
-const AgregarPrducto = () => {
+const EditarProducto = () => {
     const enviar = (e) => {
         e.preventDefault();
-        alert("Producto Agregado")
+        alert("Cambios Guardados")
     }
     return ( 
         <Fragment>
             <div className="contenedor">
                 
                 <form onSubmit={enviar}>
-                    <h2>Agrega tu producto</h2>
-                    <label>
-                        Escribe el ID del producto
-                        <input id="IDProduct"></input>
-                    </label>
+                    <h2>Edita tu producto</h2>
                     <label>
                         Escribe el nombre del producto
                         <input id="nameProduct"></input>
@@ -48,4 +44,4 @@ const AgregarPrducto = () => {
     );
 }
  
-export default AgregarPrducto;
+export default EditarProducto;
