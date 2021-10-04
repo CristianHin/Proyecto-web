@@ -1,0 +1,28 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login{
+    background-color: white;
+    border-radius: .25rem;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    row-gap: 1rem;
+}
+
+.login img{
+    width: 240px;
+}
+
+h1{
+    font-family: 'Maven Pro', sans-serif;
+    font-weight: 300;
+    color: #1176ae;
+}
