@@ -1,12 +1,25 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import Alert from "../includes/Alert";
 import NavigationMenu from "../includes/NavigationMenu";
 import './ListadoVentas.css';
 
 const ListadoVentas = () => {
+    const [showAlert, setShowAlert] = useState(true);
+
     return ( 
         <Fragment>
             <NavigationMenu />
+            {
+                showAlert
+                ? 
+                    <Alert 
+                        showAlert = { showAlert }
+                        setShowAlert = { setShowAlert }
+                    />
+                :
+                ''
+            }
             <section className="main-container">
                 <div className="cards">
                     <div className="card card-caption">
@@ -208,16 +221,16 @@ const ListadoVentas = () => {
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 Ver más</a>
                         </div>
-                        <div class="card-body">
-                            <h3 class="label-info">Fecha</h3>
+                        <div className="card-body">
+                            <h3 className="label-info">Fecha</h3>
                             <p className="content-info">29/09/2021</p>
-                            <h3 class="label-info">Productos Vendidos</h3>
+                            <h3 className="label-info">Productos Vendidos</h3>
                             <p className="content-info">34</p>
-                            <h3 class="label-info">Impuesto</h3>
+                            <h3 className="label-info">Impuesto</h3>
                             <p className="content-info">19%</p>
-                            <h3 class="label-info">Descuento</h3>
+                            <h3 className="label-info">Descuento</h3>
                             <p className="content-info">No</p>
-                            <h3 class="label-info">Total</h3>
+                            <h3 className="label-info">Total</h3>
                             <p className="content-info">$10.342.820</p>
                         </div>
                     </div>
