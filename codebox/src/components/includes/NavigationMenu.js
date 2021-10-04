@@ -18,7 +18,7 @@ const NavigationMenu = () => {
 
                 <nav className={ !showMenu ? 'main-nav nav-hidden' : 'main-nav nav-shown' }>
                     <Link to="/ventas">Ventas</Link>
-                    <a href="#">Productos</a>
+                    <a href="/Productos">Productos</a>
                     <a href="#">Usuarios</a>
                 </nav>
             </div>
