@@ -5,7 +5,7 @@ import './ListadoDeUsuarios.css';
 const ListadoDeUsuarios = () => {
     return (
         <Fragment>
-            <div class="contenedor">
+            <div class="contenedores">
                 <div className="Cabecera">
                     <h2>Informacion De Usuarios </h2>
                     <input type="search" placeholder="Buscar..."></input>
