@@ -9,7 +9,7 @@ const ListadoVentas = () => {
 
     return ( 
         <Fragment>
-            <NavigationMenu />
+           
             {
                 showAlert
                 ? 
