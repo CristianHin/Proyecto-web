@@ -5,6 +5,8 @@ import Login from "./../Login/Login";
 import NavigationMenu from "../includes/NavigationMenu";
 import ListadoVentas from "../Ventas/ListadoVentas";
 import CrearVenta from '../Ventas/CrearVenta';
+import ListadoDeUsuarios from '../ListadoDeUsuarios/ListadoDeUsuarios';
+import ActualizacionUsuarios from '../ListadoDeUsuarios/ActualizacionUsuarios';
 
 
 

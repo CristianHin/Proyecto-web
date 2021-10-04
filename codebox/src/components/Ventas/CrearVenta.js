@@ -5,7 +5,7 @@ import './CrearVenta.css'
 const CrearVenta = () => {
     return ( 
         <Fragment>
-            <NavigationMenu />
+           
             <section className="main-container">
                 <div className="cards">
                     <div className="card">
