@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import NavigationMenu from '../includes/NavigationMenu';
 
-
 const EditarVentas = () => {
 
     return (
@@ -73,16 +72,15 @@ const EditarVentas = () => {
                                         <label htmlFor="product-quantity">Cantidad</label>
                                         <input type="number" id="product-quantity" name="product-quantity" />
                                     </div>
-                                    <div className="form-group">
-                                        <a href="#" className="button button-add">
-
-                                            Guardar Cambios
-                                        </a>
-                                    </div>
                                 </div>
-                               
                             </div>
-                            
+                            <hr />
+                            <div className="card-footer">
+                                <a href="#" className="button button-new">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                                    Guardar cambios
+                                </a>
+                            </div>
                         </form>
                     </div>
                 </div>
