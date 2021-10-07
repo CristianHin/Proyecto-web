@@ -5,8 +5,11 @@ import Login from "./../Login/Login";
 import NavigationMenu from "../includes/NavigationMenu";
 import ListadoVentas from "../Ventas/ListadoVentas";
 import CrearVenta from '../Ventas/CrearVenta';
-import ListadoDeUsuarios from '../Usuarios/ListadoDeUsuarios';
-import ActualizacionUsuarios from '../Usuarios/ActualizacionUsuarios';
+import ListadoDeUsuarios from '../ListadoDeUsuarios/ListadoDeUsuarios';
+import ActualizacionUsuarios from '../ListadoDeUsuarios/ActualizacionUsuarios';
+
+
+
 import Productos from '../Productos/Productos';
 import EditarVentas from '../Ventas/EditarVentas'
 import AgregarPrducto from '../Productos/AgregarProducto';
