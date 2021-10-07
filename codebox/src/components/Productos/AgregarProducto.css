@@ -21,7 +21,7 @@
     margin-bottom: 1rem;
 }
 
-form label{
+.contenedor form label{
     display: block;
     margin-bottom: .5rem;
     font-size: 1rem;
@@ -30,28 +30,29 @@ form label{
     padding-top: 1rem;
 }
 
-form label input{
+.contenedor form label input{
     width:15rem;
 }
 
-form label #IDProduct{
+.contenedor form label #IDProduct{
     margin-left: 3rem;
 }
 
-form label #nameProduct{
+.contenedor form label #nameProduct{
     margin-left: 1rem;
 }
-form button{
+
+.contenedor form button{
     margin-top: 1rem;
     background-color: #1176ae;
     margin-left: 8rem
 }
 
-form .btn{
+.contenedor form .btn{
     margin-left: 1rem;
     background-color:  #eb2910;
 }
 
-form select {
+.contenedor form select {
     margin-left: 8.2rem;
 }
