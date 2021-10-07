@@ -9,8 +9,8 @@ const Alert = ({ showAlert, setShowAlert }) => {
                 </div>
                 <div className="alert-text">
                     <svg onClick={ () => setShowAlert(!showAlert) } fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    <span>¡Guardada!</span>
-                    <p>La venta ha sido registrada con éxito.</p>
+                    <span>¡Guardado!</span>
+                    <p>El registro ha sido agregado con éxito.</p>
                 </div>
             </div>
         </div>

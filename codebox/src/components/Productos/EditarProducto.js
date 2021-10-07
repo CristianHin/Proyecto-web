@@ -2,45 +2,66 @@ import { Fragment } from 'react';
 import './AgregarProducto.css'
 
 const EditarProducto = () => {
-    const enviar = (e) => {
-        e.preventDefault();
-        alert("Cambios Guardados")
-    }
     return ( 
-        <Fragment>
-            <div className="contenedor">
-                
-                <form onSubmit={enviar}>
-                    <h2>Edita tu producto</h2>
-                    <label>
-                        Escribe el nombre del producto
-                        <input id="nameProduct"></input>
-                    </label>
-                    <label>
-                        Escribe la cantidad se productos
-                        <input ></input>
-                    </label>
-                    <label>
-                        ¿Aplica IVA?
-                        <select>
-                            <option>Aplica</option>
-                            <option>No aplica</option>
-                        </select>
-                    </label>
-                    <button type="submit">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            Agregar
-                    </button>
-                    <button type="button" class="btn">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 20 20">
-							<path d="M10.185,1.417c-4.741,0-8.583,3.842-8.583,8.583c0,4.74,3.842,8.582,8.583,8.582S18.768,14.74,18.768,10C18.768,5.259,14.926,1.417,10.185,1.417 M10.185,17.68c-4.235,0-7.679-3.445-7.679-7.68c0-4.235,3.444-7.679,7.679-7.679S17.864,5.765,17.864,10C17.864,14.234,14.42,17.68,10.185,17.68 M10.824,10l2.842-2.844c0.178-0.176,0.178-0.46,0-0.637c-0.177-0.178-0.461-0.178-0.637,0l-2.844,2.841L7.341,6.52c-0.176-0.178-0.46-0.178-0.637,0c-0.178,0.176-0.178,0.461,0,0.637L9.546,10l-2.841,2.844c-0.178,0.176-0.178,0.461,0,0.637c0.178,0.178,0.459,0.178,0.637,0l2.844-2.841l2.844,2.841c0.178,0.178,0.459,0.178,0.637,0c0.178-0.176,0.178-0.461,0-0.637L10.824,10z"></path>
-						</svg>
-                            Cancelar
-                    </button>
-                </form>
-                
+        <section className="main-container">
+            <div className="cards">
+                <div className="card">
+                    <form action="#" method="POST">
+                        <div className="card-header">
+                            <h3>Editar Producto</h3>
+                        </div>
+                        <div className="card-body"> 
+                            <h3 className="label-info">Información general</h3>
+                            <div className="form-section">
+                                <div className="form-group">
+                                    <label htmlFor="product-brand">Marca</label>
+                                    <input type="text" id="product-brand" name="product-brand" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="product-name">Nombre</label>
+                                    <input type="text" id="product-name" name="product-name" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="product-price">Precio Unitario <small>($)</small></label>
+                                    <input type="number" id="product-price" name="product-price" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="product-iva">IVA</label>
+                                    <select id="product-iva" name="product-iva">
+                                        <option selected>--SELECCIONE UNA OPCIÓN--</option>
+                                        <option>Aplica</option>
+                                        <option>No aplica</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="product-stock">Stock <small>(cantidad)</small></label>
+                                    <input type="number" id="product-stock" name="product-stock" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="product-dimension">Dimensiones <small>(cm)</small></label>
+                                    <input type="text" id="product-dimension" name="product-dimension" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="product-weight">Peso <small>(gr)</small></label>
+                                    <input type="number" id="product-weight" name="product-weight" />
+                                </div>
+                                <div className="form-group two-columns">
+                                    <label htmlFor="product-description">Descripción</label>
+                                    <textarea rows="5" id="product-description" name="product-description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="card-footer">
+                            <a href="#" className="button button-new">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                                Guardar cambios
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </Fragment>
+        </section>
     );
 }
  
