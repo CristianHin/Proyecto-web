@@ -141,7 +141,6 @@
 }
 
 .container button {
-   
     background-color: #e59500;
     color: #FFFFFF;
     cursor: pointer;
@@ -233,7 +232,6 @@
 }
 
 .addProduct .agregar{
-    
     display: inline-flex;
     padding: .5rem .75rem;
     text-decoration: none;

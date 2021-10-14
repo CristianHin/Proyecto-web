@@ -1,21 +1,63 @@
-import { Fragment, useState } from "react";
+import ProductContext from "../../context/productos/ProductContext";
+import { Fragment, useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Alert from "../includes/Alert";
 import './ListadoProductos.css';
+import axios from 'axios';
 
 const Productos = () => {
 
-    const [showAlert, setShowAlert] = useState(true);
+    //Extraer productos del state inicial
+    const productsContext = useContext(ProductContext);
+
+    const { products, alert, getProducts } = productsContext;
+
+    const [optionFilter, setOptionFilter] = useState('id');
+    const [filter, setFilter] = useState('');
+    
+    //Obtener productos cuando cargue el componente
+    useEffect(() => {
+        const consultAPI = async () => {
+            const url = 'http://localhost:8080/api/productos';
+    
+            const results = await axios.get(url);
+
+            getProducts(results.data.products);
+        }
+
+        consultAPI();
+    }, []);
+
+    //Obtener productos cuando el valor del input o select del filtro cambien
+    useEffect(() => {
+        const consultAPI = async (fil, opt) => {
+            const url = `http://localhost:8080/api/productos?${opt}=${fil}`;
+            
+            const results = await axios.get(url);
+
+            getProducts(results.data.products);
+        };
+
+        consultAPI(filter, optionFilter);
+    }, [filter, optionFilter]);
+
+    const onChangeSelect = e => {
+        setOptionFilter(e.target.value);
+    };
+
+    const onChangeFilter = e => {
+        setFilter(e.target.value);
+    };
 
     return ( 
         <Fragment>
-           
             {
-                showAlert
+                alert
                 ? 
                     <Alert 
-                        showAlert = { showAlert }
-                        setShowAlert = { setShowAlert }
+                        alertType="success"
+                        alertHeader="¡Guardado!" 
+                        alertBody="El registro ha sido agregado con éxito." 
                     />
                 :
                     null
@@ -40,16 +82,16 @@ const Productos = () => {
                         <div className="card-header">
                             <h3>Información general</h3>
                             <div className="input-group">
-                                <select>
+                                {/* <select>
                                     <option>5</option>
                                     <option>10</option>
                                     <option>25</option>
+                                </select> */}
+                                <select id="option-filter" name="option-filter" onChange={ onChangeSelect }>
+                                    <option value="id">ID Producto</option>
+                                    <option value="description">Descripción Producto</option>
                                 </select>
-                                <select>
-                                    <option>ID Producto</option>
-                                    <option>Descripción Producto</option>
-                                </select>
-                                <input type="search" placeholder="Buscar..."></input>
+                                <input type="search" placeholder="Buscar..." onChange={ onChangeFilter }></input>
                             </div>    
                         </div>
                         <div className="card-body">
@@ -58,133 +100,44 @@ const Productos = () => {
                                     <tr>
                                         <th>Id</th>
                                         <th>Nombre</th>
-                                        <th>Descripción</th>
+                                        <th colSpan="2">Descripción</th>
                                         <th>Stock (P/U)</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>JUG-023</td>
-                                        <td>Aviones de juguete</td>
-                                        <td>Avión blanco con negro pequeño</td>
-                                        <td>20</td>
-                                        <td className="action">
-                                            <Link to="/productos/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>ACC-064</td>
-                                        <td>Reloj</td>
-                                        <td>Reloj de pulso marrón</td>
-                                        <td>12</td>
-                                        <td className="action">
-                                            <Link to="/productos/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>ELE-12</td>
-                                        <td>Horno Microondas</td>
-                                        <td>Microondas eléctrico color gris</td>
-                                        <td>25</td>
-                                        <td className="action">
-                                            <Link to="/productos/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>COM-983</td>
-                                        <td>Aguacates</td>
-                                        <td>Aguacate serrano</td>
-                                        <td>12</td>
-                                        <td className="action">
-                                            <Link to="/productos/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>TEC-54</td>
-                                        <td>Celular</td>
-                                        <td>Smartphone android 2gb ram</td>
-                                        <td>0</td>
-                                        <td className="action">
-                                            <Link to="/productos/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>TEC-21</td>
-                                        <td>Computador Portatil</td>
-                                        <td>PC intel i7, ssd de 512gb y 8gb de ram</td>
-                                        <td>10</td>
-                                        <td className="action">
-                                            <Link to="/productos/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>TEC-89</td>
-                                        <td>Impresoras</td>
-                                        <td>Impresora láser, escáner y fotocopiadora</td>
-                                        <td>8</td>
-                                        <td className="action">
-                                            <Link to="/productos/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>HOG-03</td>
-                                        <td>Kit de limpieza Hogar</td>
-                                        <td>Detergente, brillador y esponja</td>
-                                        <td>25</td>
-                                        <td className="action">
-                                            <Link to="/productos/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    {
+                                        products.length > 0
+                                        ?
+                                            products.map(product => {
+                                                return (
+                                                    <tr key={ product._id }>
+                                                        <td>{ product._id }</td>
+                                                        <td>{ product.name }</td>
+                                                        <td colSpan="2">{ product.description }</td>
+                                                        <td>{ product.stock }</td>
+                                                        <td className="action">
+                                                            <Link to="/productos/editar" className="editar">
+                                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        :
+                                            <tr>
+                                                <td colSpan="5">No hay productos registrados en el sistema</td>
+                                            </tr>
+                                    }
                                 </tbody>
                             </table>
-                            <div className="pagination">
+                            {/* <div className="pagination">
                                 Mostrando de 1 a 8 de 100 entradas 
                                 <div className="pagination-links">
                                     <a href="#" className="button button-pagination">Anterior</a>
                                     <a href="#" className="button button-pagination">Siguiente</a>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="card">
