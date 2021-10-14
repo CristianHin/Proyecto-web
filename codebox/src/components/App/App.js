@@ -29,7 +29,7 @@ const App = () => {
               <Route path="/usuarios/editar" exact component={ EditarUsuario }></Route>
               <Route path="/productos" exact component={ ListadoProductos }></Route>
               <Route path="/productos/agregar" exact component={ AgregarProducto }></Route>
-              <Route path="/productos/editar" exact component={ EditarProducto }></Route>
+              <Route path="/productos/editar/:id" exact component={ EditarProducto }></Route>
             </Switch>
           </Router>
         </ProductState>
