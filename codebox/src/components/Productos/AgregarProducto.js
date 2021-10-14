@@ -7,10 +7,10 @@ import axios from 'axios';
 
 const AgregarProducto = () => {
 
-    //Extraer productos del state inicial
+    //HOOKS AND DESTRUCTURING
     const productsContext = useContext(ProductContext);
 
-    const { products, errorform, getProducts, showAlert, showError, closeAlert } = productsContext;
+    const { products, errorform, getProducts, showAlert, showError, closeAlert, addProduct } = productsContext;
 
     const [product, setProduct] = useState({
         _id: '',
@@ -34,6 +34,7 @@ const AgregarProducto = () => {
 
     let history = useHistory();
 
+    //EVENTOS
     const changeProduct = e => {
         setProduct({
             ...product,
@@ -62,6 +63,8 @@ const AgregarProducto = () => {
             .catch(err => {
                 console.log(err);
             });
+
+        addProduct();
     }
 
     return ( 

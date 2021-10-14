@@ -1,25 +1,30 @@
-import { Fragment, useState } from "react";
+import UserContext from "../../context/usuarios/UserContext";
+import { Fragment, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Alert from "../includes/Alert";
 import './ListadoUsuarios.css';
+import axios from "axios";
 
 const ListadoUsuarios = () => {
+
+    const usersContext = useContext(UserContext);
+
+    const { users, getUsers } = usersContext;
+
+    //Obtener usuarios cuando cargue el componente
+    useEffect(() => {
+        const consultAPI = async () => {
+            const url = 'http://localhost:8080/api/usuarios';
     
-    const [showAlert, setShowAlert] = useState(true);
+            const results = await axios.get(url);
+
+            getUsers(results.data.users);
+        }
+
+        consultAPI();
+    }, []);
 
     return ( 
         <Fragment>
-           
-            {
-                showAlert
-                ? 
-                    <Alert 
-                        showAlert = { showAlert }
-                        setShowAlert = { setShowAlert }
-                    />
-                :
-                    null
-            }
             <section className="main-container">
                 <div className="cards">
                     <div className="card card-caption">
@@ -36,11 +41,11 @@ const ListadoUsuarios = () => {
                         <div className="card-header">
                             <h3>Información general</h3>
                             <div className="input-group">
-                                <select>
+                                {/* <select>
                                     <option>5</option>
                                     <option>10</option>
                                     <option>25</option>
-                                </select>
+                                </select> */}
                                 <select>
                                     <option>ID Usuario</option>
                                     <option>Nombre</option>
@@ -61,143 +66,36 @@ const ListadoUsuarios = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>Carlos Gomez</td>
-                                        <td>Administrador</td>
-                                        <td>
-                                            <span className="tag-status cancelled">Inactivo</span>
-                                        </td>
-                                        <td className="action">
-                                            <Link to="/usuarios/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>987654321</td>
-                                        <td>Andrés Cardona</td>
-                                        <td>Vendedor</td>
-                                        <td>
-                                            <span className="tag-status paid">Activo</span>
-                                        </td>
-                                        <td className="action">
-                                            <Link to="/usuarios/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>    
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>135792468</td>
-                                        <td>Tatiana Rincón</td>
-                                        <td>Administrador</td>
-                                        <td>
-                                            <span className="tag-status paid">Activo</span>
-                                        </td>
-                                        <td className="action">
-                                            <Link to="/usuarios/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>  
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>246813579</td>
-                                        <td>Samuel Zapata</td>
-                                        <td>Administrador</td>
-                                        <td>
-                                            <span className="tag-status cancelled">Inactivo</span>
-                                        </td>
-                                        <td className="action">
-                                            <Link to="/usuarios/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg> 
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>975318642</td>
-                                        <td>Juan Molina</td>
-                                        <td>Vendedor</td>
-                                        <td>
-                                            <span className="tag-status paid">Activo</span>
-                                        </td>
-                                        <td className="action">
-                                            <Link to="/usuarios/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>864297531</td>
-                                        <td>Carolina García</td>
-                                        <td>Vendedor</td>
-                                        <td>
-                                            <span className="tag-status paid">Activo</span>
-                                        </td>
-                                        <td className="action">
-                                            <Link to="/usuarios/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>                               
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>00000000</td>
-                                        <td>Hector Vega</td>
-                                        <td>Administrador</td>
-                                        <td>
-                                            <span className="tag-status cancelled">Inactivo</span>
-                                        </td>
-                                        <td className="action">
-                                            <Link to="/usuarios/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>     
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>888888888</td>
-                                        <td>Mariana Fernández</td>
-                                        <td>Vendedor</td>
-                                        <td>
-                                            <span className="tag-status cancelled">Inactivo</span>
-                                        </td>
-                                        <td className="action">
-                                            <Link to="/usuarios/editar" className="editar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                            </Link>
-                                            <button type="button" className="eliminar">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    {
+                                        users.map(user => {
+                                            return (
+                                                <tr>
+                                                    <td>{ user._id }</td>
+                                                    <td>{ user.name }</td>
+                                                    <td className="role">{ user.role }</td>
+                                                    <td>
+                                                        <span className={ `tag-status ${ user.status ? 'paid' : 'cancelled' }` }>
+                                                            { user.status ? 'Activo' : 'Inactivo' }
+                                                        </span>
+                                                    </td>
+                                                    <td className="action">
+                                                        <Link to="/usuarios/editar" className="editar">
+                                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
                                 </tbody>
                             </table>
-                            <div className="pagination">
+                            {/* <div className="pagination">
                                 Mostrando de 1 a 8 de 100 entradas 
                                 <div className="pagination-links">
                                     <a href="#" className="button button-pagination">Anterior</a>
                                     <a href="#" className="button button-pagination">Siguiente</a>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="card">

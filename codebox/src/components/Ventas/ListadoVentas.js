@@ -1,24 +1,11 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
-import Alert from "../includes/Alert";
 import './ListadoVentas.css';
 
 const ListadoVentas = () => {
-    const [showAlert, setShowAlert] = useState(true);
 
     return ( 
         <Fragment>
-           
-            {
-                showAlert
-                ? 
-                    <Alert 
-                        showAlert = { showAlert }
-                        setShowAlert = { setShowAlert }
-                    />
-                :
-                    null
-            }
             <section className="main-container">
                 <div className="cards">
                     <div className="card card-caption">
