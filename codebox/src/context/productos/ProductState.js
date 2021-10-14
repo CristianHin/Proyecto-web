@@ -42,19 +42,20 @@ const ProductState = props => {
         dispatch({
             type: MOSTRAR_ALERTA
         });
-    }
+    };
 
+    //Cerrar alerta
     const closeAlert = () => {
         dispatch({
             type: CERRAR_ALERTA
         })
-    }
+    };
 
     const addProduct = () => {
         dispatch({
             type: AGREGAR_PRODUCTO
         });
-    }
+    };
 
     return (
         <ProductContext.Provider
@@ -65,7 +66,8 @@ const ProductState = props => {
                 getProducts,
                 showError,
                 showAlert,
-                closeAlert
+                closeAlert,
+                addProduct
             }}
         >
             { props.children }

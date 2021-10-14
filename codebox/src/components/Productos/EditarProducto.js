@@ -7,10 +7,10 @@ import axios from 'axios';
 
 const EditarProducto = (props) => {
 
-    //Hooks y destructuring
+    //HOOKS AND DESTRUCTURING
     const productsContext = useContext(ProductContext);
 
-    const { errorform, showAlert, showError, closeAlert } = productsContext;
+    const { errorform, showAlert, showError, closeAlert, addProduct } = productsContext;
     
     const { _id, name, brand, price, iva, stock, description } = props.location.state;
 
@@ -33,7 +33,7 @@ const EditarProducto = (props) => {
 
     let history = useHistory();
 
-    //Funciones del formulario
+    //EVENTOS
     const changeProduct = e => {
         setProduct({
             ...product,
@@ -62,6 +62,8 @@ const EditarProducto = (props) => {
             .catch(err => {
                 console.log(err);
             });
+
+        addProduct();
     };
 
     return (
