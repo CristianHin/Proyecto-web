@@ -1,6 +1,6 @@
 import ProductContext from '../../context/productos/ProductContext';
 import { useHistory } from 'react-router-dom';
-import { useState, useContext, Fragment } from 'react';
+import { useState, useContext, useEffect, Fragment } from 'react';
 import Alert from '../includes/Alert';
 import './AgregarProducto.css'
 import axios from 'axios';
@@ -10,7 +10,7 @@ const AgregarProducto = () => {
     //Extraer productos del state inicial
     const productsContext = useContext(ProductContext);
 
-    const { products, errorform, getProducts, showAlert, showError } = productsContext;
+    const { products, errorform, getProducts, showAlert, showError, closeAlert } = productsContext;
 
     const [product, setProduct] = useState({
         _id: '',
@@ -23,6 +23,14 @@ const AgregarProducto = () => {
     });
 
     const { _id, name, brand, price, iva, stock, description } = product; 
+
+    useEffect(() => {
+        if (errorform) {
+            setTimeout(() => {
+                closeAlert();
+            }, 5000);
+        }
+    }, [errorform]);
 
     let history = useHistory();
 
@@ -46,7 +54,10 @@ const AgregarProducto = () => {
         axios.post('http://localhost:8080/api/productos', product)
             .then(res => {
                 showAlert();
-                history.push('/productos');
+                history.push({
+                    pathname: '/productos',
+                    state: 'create'
+                });
             })
             .catch(err => {
                 console.log(err);

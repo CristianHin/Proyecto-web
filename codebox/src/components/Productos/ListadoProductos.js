@@ -5,12 +5,12 @@ import Alert from "../includes/Alert";
 import './ListadoProductos.css';
 import axios from 'axios';
 
-const Productos = () => {
+const Productos = (props) => {
 
     //Extraer productos del state inicial
     const productsContext = useContext(ProductContext);
 
-    const { products, alert, getProducts } = productsContext;
+    const { products, alert, getProducts, closeAlert } = productsContext;
 
     const [optionFilter, setOptionFilter] = useState('id');
     const [filter, setFilter] = useState('');
@@ -27,6 +27,14 @@ const Productos = () => {
 
         consultAPI();
     }, []);
+
+    useEffect(() => {
+        if (alert) {
+            setTimeout(() => {
+                closeAlert();
+            }, 5000);
+        }
+    }, [alert]);
 
     //Obtener productos cuando el valor del input o select del filtro cambien
     useEffect(() => {
@@ -57,7 +65,9 @@ const Productos = () => {
                     <Alert 
                         alertType="success"
                         alertHeader="¡Guardado!" 
-                        alertBody="El registro ha sido agregado con éxito." 
+                        alertBody={ props.location.state === 'create' 
+                            ? 'El registro ha sido agregado con éxito' 
+                            : 'Los cambios se han guardado con éxito' } 
                     />
                 :
                     null
@@ -117,7 +127,12 @@ const Productos = () => {
                                                         <td colSpan="2">{ product.description }</td>
                                                         <td>{ product.stock }</td>
                                                         <td className="action">
-                                                            <Link to="/productos/editar" className="editar">
+                                                            <Link 
+                                                                to={{
+                                                                    pathname: `/productos/editar/${product._id}`,
+                                                                    state: product
+                                                                }} 
+                                                                className="editar">
                                                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
                                                             </Link>
                                                         </td>
@@ -150,106 +165,12 @@ const Productos = () => {
                         <div className="card-body">
                             <h3 className="label-info">Marca</h3>
                             <p className="content-info">Sony</p>
-                            <h3 className="label-info">Dimensiones</h3>
-                            <p className="content-info">130x86 (cm)</p>
-                            <h3 className="label-info">Peso</h3>
-                            <p className="content-info">1000 gr</p>
                             <h3 className="label-info">Iva</h3>
                             <p className="content-info">Aplica</p>
                             <h3 className="label-info">Precio</h3>
                             <p className="content-info">$1.800.000</p>
                         </div>
                     </div>
-                    {/* <div className="card">
-                        <h2>Administrar Productos</h2>
-                        <div className="addProduct">
-                            <span>Agrega tus productos</span>
-                            <Link to="/productos/agregar" className="agregar">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                                Agregar                     
-                            </Link>
-
-                        </div>
-                        <div className="findProduct">
-                            <h4>busca el producto que necesites</h4>
-                            <div className="input-group">
-                                
-                                <select>
-                                    <option>ID Producto</option>
-                                    <option>Nombre del producto</option>
-                                </select>
-                                <input type="search" placeholder="Buscar..."></input>
-                                <button>
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                    Buscar
-                                </button>
-                            </div>
-
-                            <table>
-
-                                <thead>
-                                    <tr>
-                                        <th>Id </th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>IVA</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Aviones de juguete</td>
-                                        <td>20u</td>
-                                        <td>Aplica</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            
-
-                        </div>
-                        <div className="editProduct">
-                            <h4>Edita o elimina productos</h4>
-                            <div className="input-group">
-                                
-                                <select>
-                                    <option>ID Producto</option>
-                                    <option>Nombre del producto</option>
-                                </select>
-                                <input type="search" placeholder="Buscar..."></input>
-                                <button>
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                    Buscar
-                                </button>
-                            </div>
-                            <table>
-
-                                <thead>
-                                    <tr>
-                                        <th>Id </th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>IVA</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Aviones de juguete</td>
-                                        <td>20u</td>
-                                        <td>Aplica</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <Link to="/productos/editar" className="editar">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                Editar                   
-                            </Link>
-                            <button type="button" className="eliminar">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                Eliminar
-                            </button>
-                        </div>
-                    </div> */}
                 </div>
             </section>
         </Fragment>
