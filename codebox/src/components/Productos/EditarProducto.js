@@ -117,7 +117,12 @@ const EditarProducto = (props) => {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="iva">IVA</label>
-                                        <select id="iva" name="iva" defaultValue={ product.iva ? true : false }>
+                                        <select 
+                                            id="iva" 
+                                            name="iva" 
+                                            onChange={ changeProduct }
+                                            defaultValue={ product.iva === 'true' ? true : false }
+                                        >
                                             <option>--SELECCIONE UNA OPCIÓN--</option>
                                             <option value="true">Aplica</option>
                                             <option value="false">No aplica</option>
