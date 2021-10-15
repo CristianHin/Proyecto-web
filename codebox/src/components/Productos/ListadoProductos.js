@@ -1,5 +1,6 @@
 import ProductContext from "../../context/productos/ProductContext";
 import { Fragment, useState, useContext, useEffect } from "react";
+import AlertContext from "../../context/alerts/AlertContext";
 import { Link } from "react-router-dom";
 import Alert from "../includes/Alert";
 import './ListadoProductos.css';
@@ -9,8 +10,10 @@ const Productos = (props) => {
 
     //Extraer productos del state inicial
     const productsContext = useContext(ProductContext);
+    const { products, getProducts } = productsContext;
 
-    const { products, alert, getProducts, closeAlert } = productsContext;
+    const alertsContext = useContext(AlertContext);
+    const { alert, closeAlert } = alertsContext;
 
     const [optionFilter, setOptionFilter] = useState('id');
     const [filter, setFilter] = useState('');

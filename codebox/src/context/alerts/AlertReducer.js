@@ -1,21 +1,25 @@
-import {  
-    OBTENER_PRODUCTOS,
+import {
     VALIDAR_FORMULARIO,
-    AGREGAR_PRODUCTO,
     MOSTRAR_ALERTA,
     CERRAR_ALERTA,
 } from '../../types';
 
 export default (state, action) => {
     switch(action.type) {
-        case OBTENER_PRODUCTOS:
+        case VALIDAR_FORMULARIO:
             return {
                 ...state,
-                products: action.payload
+                errorform: true
             }
-        case AGREGAR_PRODUCTO:
+        case MOSTRAR_ALERTA:
             return {
                 ...state,
+                alert: true
+            }
+        case CERRAR_ALERTA:
+            return {
+                ...state,
+                alert: false,
                 errorform: false,
             }
         default: 

@@ -1,5 +1,6 @@
 import ProductContext from '../../context/productos/ProductContext';
 import { Fragment, useState, useContext, useEffect } from 'react';
+import AlertContext from "../../context/alerts/AlertContext";
 import { useHistory } from 'react-router-dom';
 import Alert from '../includes/Alert';
 import './AgregarProducto.css';
@@ -9,8 +10,10 @@ const EditarProducto = (props) => {
 
     //HOOKS AND DESTRUCTURING
     const productsContext = useContext(ProductContext);
+    const { addProduct } = productsContext;
 
-    const { errorform, showAlert, showError, closeAlert, addProduct } = productsContext;
+    const alertsContext = useContext(AlertContext);
+    const { errorform, showAlert, closeAlert, showError } = alertsContext;
     
     const { _id, name, brand, price, iva, stock, description } = props.location.state;
 

@@ -3,19 +3,14 @@ import ProductContext from './ProductContext';
 import ProductReducer from './ProductReducer';
 
 import { 
-    OBTENER_PRODUCTOS, 
-    VALIDAR_FORMULARIO,
-    AGREGAR_PRODUCTO,
-    MOSTRAR_ALERTA,
-    CERRAR_ALERTA,
+    OBTENER_PRODUCTOS,
+    AGREGAR_PRODUCTO
 } from '../../types';
 
 const ProductState = props => {
 
     const initialState = {
-        products: [],
-        errorform: false,
-        alert: false,
+        products: []
     }
 
     //Dispatch para ejecutar las acciones
@@ -31,27 +26,6 @@ const ProductState = props => {
         });
     };
 
-    //Validar formulario
-    const showError = () => {
-        dispatch({
-            type: VALIDAR_FORMULARIO
-        });
-    };
-
-    //Mostrar alerta
-    const showAlert = () => {
-        dispatch({
-            type: MOSTRAR_ALERTA
-        });
-    };
-
-    //Cerrar alerta
-    const closeAlert = () => {
-        dispatch({
-            type: CERRAR_ALERTA
-        })
-    };
-
     const addProduct = () => {
         dispatch({
             type: AGREGAR_PRODUCTO
@@ -62,12 +36,7 @@ const ProductState = props => {
         <ProductContext.Provider
             value={{
                 products: state.products,
-                errorform: state.errorform,
-                alert: state.alert,
                 getProducts,
-                showError,
-                showAlert,
-                closeAlert,
                 addProduct
             }}
         >

@@ -1,6 +1,7 @@
 import ProductContext from '../../context/productos/ProductContext';
-import { useHistory } from 'react-router-dom';
 import { useState, useContext, useEffect, Fragment } from 'react';
+import AlertContext from '../../context/alerts/AlertContext';
+import { useHistory } from 'react-router-dom';
 import Alert from '../includes/Alert';
 import './AgregarProducto.css'
 import axios from 'axios';
@@ -9,8 +10,10 @@ const AgregarProducto = () => {
 
     //HOOKS AND DESTRUCTURING
     const productsContext = useContext(ProductContext);
+    const { addProduct } = productsContext;
 
-    const { products, errorform, getProducts, showAlert, showError, closeAlert, addProduct } = productsContext;
+    const alertsContext = useContext(AlertContext);
+    const { errorform, showAlert, showError, closeAlert } = alertsContext;
 
     const [product, setProduct] = useState({
         _id: '',

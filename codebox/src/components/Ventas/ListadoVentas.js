@@ -1,5 +1,5 @@
 import PurchaseContext from '../../context/ventas/PurchaseContext';
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './ListadoVentas.css';
 import axios from 'axios';
@@ -10,6 +10,9 @@ const ListadoVentas = () => {
     const purchasesContext = useContext(PurchaseContext);
 
     const { purchases, getPurchases } = purchasesContext;
+
+    const [optionFilter, setOptionFilter] = useState('idVenta');
+    const [filter, setFilter] = useState('');
 
     //Obtener purchases cuando cargue el componente
     useEffect(() => {
@@ -23,6 +26,27 @@ const ListadoVentas = () => {
 
         consultAPI();
     }, []);
+
+    //Obtener ventas cuando el valor del input o select del filtro cambien
+    useEffect(() => {
+        const consultAPI = async (fil, opt) => {
+            const url = `http://localhost:8080/api/ventas?${opt}=${fil}`;
+            
+            const results = await axios.get(url);
+
+            getPurchases(results.data.purchases);
+        };
+
+        consultAPI(filter, optionFilter);
+    }, [filter, optionFilter]);
+
+    const onChangeSelect = e => {
+        setOptionFilter(e.target.value);
+    };
+
+    const onChangeFilter = e => {
+        setFilter(e.target.value);
+    };
 
     return ( 
         <Fragment>
@@ -51,12 +75,12 @@ const ListadoVentas = () => {
                                     <option>10</option>
                                     <option>25</option>
                                 </select> */}
-                                <select>
-                                    <option>ID Venta</option>
-                                    <option>ID Cliente</option>
-                                    <option>Nombre Cliente</option>
+                                <select id="option-filter" name="option-filter" onChange={ onChangeSelect }>
+                                    <option value="idVenta">ID Venta</option>
+                                    <option value="idCliente">ID Cliente</option>
+                                    <option value="nameCliente">Nombre Cliente</option>
                                 </select>
-                                <input type="search" placeholder="Buscar..."></input>
+                                <input type="search" placeholder="Buscar..." onChange={ onChangeFilter }></input>
                             </div>
                         </div>
                         <div className="card-body">
@@ -78,7 +102,7 @@ const ListadoVentas = () => {
                                                     <td>{ purchase._id }</td>
                                                     <td>{ purchase.client_id }</td>
                                                     <td>{ purchase.client_name }</td>
-                                                    <td>{ purchase.date }</td>
+                                                    <td>{ purchase.date.substring(0, 10) }</td>
                                                     <td className="action">
                                                     <Link to="/ventas/editar" className="editar">
                                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   

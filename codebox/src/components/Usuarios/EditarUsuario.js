@@ -1,5 +1,5 @@
 import React, {Fragment, useState, useEffect, useContext} from 'react';
-import UserContext from '../../context/usuarios/UserContext';
+import AlertContext from "../../context/alerts/AlertContext";
 import { useHistory } from 'react-router';
 import Alert from '../includes/Alert';
 import axios from 'axios';
@@ -7,9 +7,8 @@ import axios from 'axios';
 const EditarUsuario = (props) => {
 
     //HOOKS AND DESTRUCTURING
-    const usersContext = useContext(UserContext);
-
-    const { errorform, showAlert, showError, closeAlert } = usersContext;
+    const alertsContext = useContext(AlertContext);
+    const { errorform, showAlert, closeAlert, showError } = alertsContext;
 
     const { email, imageurl, name, role, status, _id } = props.location.state;
     
