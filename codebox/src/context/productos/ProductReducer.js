@@ -1,9 +1,9 @@
 import {  
-    AGREGAR_PRODUCTO,
-    CERRAR_ALERTA,
-    MOSTRAR_ALERTA,
     OBTENER_PRODUCTOS,
     VALIDAR_FORMULARIO,
+    AGREGAR_PRODUCTO,
+    MOSTRAR_ALERTA,
+    CERRAR_ALERTA,
 } from '../../types';
 
 export default (state, action) => {

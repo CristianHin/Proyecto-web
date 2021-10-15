@@ -3,10 +3,11 @@ import ProductContext from './ProductContext';
 import ProductReducer from './ProductReducer';
 
 import { 
+    OBTENER_PRODUCTOS, 
+    VALIDAR_FORMULARIO,
     AGREGAR_PRODUCTO,
-    CERRAR_ALERTA,
     MOSTRAR_ALERTA,
-    OBTENER_PRODUCTOS, VALIDAR_FORMULARIO
+    CERRAR_ALERTA,
 } from '../../types';
 
 const ProductState = props => {
