@@ -1,12 +1,11 @@
-import ProductContext from '../../context/productos/ProductContext';
+import AlertContext from '../../context/alerts/AlertContext';
 import { useContext } from 'react';
 import './Alert.css'
 
 const Alert = ({ alertType, alertHeader, alertBody }) => {
-    //Extraer productos del state inicial
-    const productsContext = useContext(ProductContext);
 
-    const { closeAlert } = productsContext;
+    const alertsContext = useContext(AlertContext);
+    const { closeAlert } = alertsContext;
 
     return ( 
         <div className="alert-container">

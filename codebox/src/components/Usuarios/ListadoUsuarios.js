@@ -1,4 +1,5 @@
 import UserContext from "../../context/usuarios/UserContext";
+import AlertContext from "../../context/alerts/AlertContext";
 import { Fragment, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Alert from "../includes/Alert";
@@ -8,8 +9,10 @@ import axios from "axios";
 const ListadoUsuarios = () => {
 
     const usersContext = useContext(UserContext);
+    const { users, getUsers } = usersContext;
 
-    const { users, alert, getUsers, closeAlert } = usersContext;
+    const alertsContext = useContext(AlertContext);
+    const { alert, closeAlert } = alertsContext;
 
     //Obtener usuarios cuando cargue el componente
     useEffect(() => {
