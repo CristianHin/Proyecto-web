@@ -17,15 +17,12 @@ const AgregarProducto = () => {
 
     const [product, setProduct] = useState({
         _id: '',
-        name: '',
-        brand: '',
+        description: '',
         price: '',
-        iva: '',
-        stock: '',
-        description: ''
+        status: ''
     });
 
-    const { _id, name, brand, price, iva, stock, description } = product; 
+    const { _id, description, price, status } = product; 
 
     useEffect(() => {
         if (errorform) {
@@ -49,8 +46,7 @@ const AgregarProducto = () => {
         e.preventDefault();
 
         //Validar formulario
-        if (_id.trim() === '' || name.trim() === '' || brand.trim() === '' || price.trim() === ''
-            || iva.trim() === '' || stock.trim() === '' || description.trim() === '') {
+        if (_id.trim() === '' || price.trim() === '' || status.trim() === '' || description.trim() === '') {
             return showError();
         }
 
@@ -100,26 +96,6 @@ const AgregarProducto = () => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="brand">Marca</label>
-                                        <input 
-                                            type="text" 
-                                            id="brand" 
-                                            name="brand" 
-                                            onChange={ changeProduct } 
-                                            value={ brand }
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="name">Nombre</label>
-                                        <input 
-                                            type="text" 
-                                            id="name" 
-                                            name="name" 
-                                            onChange={ changeProduct }
-                                            value={ name }
-                                        />
-                                    </div>
-                                    <div className="form-group">
                                         <label htmlFor="price">Precio Unitario <small>($)</small></label>
                                         <input 
                                             type="number" 
@@ -130,26 +106,16 @@ const AgregarProducto = () => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="iva">IVA</label>
+                                        <label htmlFor="status">Estado</label>
                                         <select 
-                                            id="iva" 
-                                            name="iva" 
+                                            id="status" 
+                                            name="status" 
                                             onChange={ changeProduct } 
                                         >
                                             <option>--SELECCIONE UNA OPCIÓN--</option>
-                                            <option value="true">Aplica</option>
-                                            <option value="false">No aplica</option>
+                                            <option value="disponible">Disponible</option>
+                                            <option value="no disponible">No disponible</option>
                                         </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="stock">Stock <small>(cantidad)</small></label>
-                                        <input 
-                                            type="number" 
-                                            id="stock" 
-                                            name="stock" 
-                                            onChange={ changeProduct }
-                                            value={ stock }
-                                        />
                                     </div>
                                     <div className="form-group two-columns">
                                         <label htmlFor="description">Descripción</label>

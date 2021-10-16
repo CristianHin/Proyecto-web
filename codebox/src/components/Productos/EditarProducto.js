@@ -15,14 +15,11 @@ const EditarProducto = (props) => {
     const alertsContext = useContext(AlertContext);
     const { errorform, showAlert, closeAlert, showError } = alertsContext;
     
-    const { _id, name, brand, price, iva, stock, description } = props.location.state;
+    const { _id, description, price, status } = props.location.state;
 
     const [product, setProduct] = useState({
-        name: name,
-        brand: brand,
         price: price.toString(),
-        iva: iva.toString(),
-        stock: stock.toString(),
+        status: status.toString(),
         description: description
     });
 
@@ -48,8 +45,7 @@ const EditarProducto = (props) => {
         e.preventDefault();
 
         //Validar formulario
-        if (product.name.trim() === '' || product.brand.trim() === '' || product.price.trim() === ''
-            || product.iva.trim() === '' || product.stock.trim() === '' || product.description.trim() === '') {
+        if (product.description.trim() === '' || product.price.trim() === '' || product.status.trim() === '') {
             return showError();
         }
 
@@ -89,26 +85,6 @@ const EditarProducto = (props) => {
                                 <h3 className="label-info">Información general</h3>
                                 <div className="form-section">
                                     <div className="form-group">
-                                        <label htmlFor="brand">Marca</label>
-                                        <input 
-                                            type="text" 
-                                            id="brand" 
-                                            name="brand"
-                                            onChange={ changeProduct }
-                                            value={ product.brand }
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="name">Nombre</label>
-                                        <input 
-                                            type="text" 
-                                            id="name" 
-                                            name="name"
-                                            onChange={ changeProduct }
-                                            value={ product.name }    
-                                        />
-                                    </div>
-                                    <div className="form-group">
                                         <label htmlFor="price">Precio Unitario <small>($)</small></label>
                                         <input 
                                             type="number" 
@@ -119,27 +95,17 @@ const EditarProducto = (props) => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="iva">IVA</label>
+                                        <label htmlFor="status">Estado</label>
                                         <select 
-                                            id="iva" 
-                                            name="iva" 
+                                            id="status" 
+                                            name="status" 
                                             onChange={ changeProduct }
-                                            defaultValue={ product.iva === 'true' ? true : false }
+                                            defaultValue={ product.status == 'disponible' ? 'disponible' : 'no disponible' }
                                         >
                                             <option>--SELECCIONE UNA OPCIÓN--</option>
-                                            <option value="true">Aplica</option>
-                                            <option value="false">No aplica</option>
+                                            <option value="disponible">Disponible</option>
+                                            <option value="no disponible">No disponible</option>
                                         </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="stock">Stock <small>(cantidad)</small></label>
-                                        <input 
-                                            type="number" 
-                                            id="stock" 
-                                            name="stock"
-                                            onChange={ changeProduct }
-                                            value={ product.stock }
-                                        />
                                     </div>
                                     <div className="form-group two-columns">
                                         <label htmlFor="description">Descripción</label>

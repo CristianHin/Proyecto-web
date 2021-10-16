@@ -97,11 +97,12 @@ const EditarUsuario = (props) => {
                                             id="status" 
                                             name="status" 
                                             onChange={ changeUser }
-                                            value={ user.status === 'true' ? true : false }
+                                            value={ user.status === 'pendiente' ? 'pendiente' : user.status === 'autorizado' ? 'autorizado' : 'no autorizado' }
                                         >
                                             <option>--SELECCIONE UN ESTADO--</option>
-                                            <option value="true">Activo</option>
-                                            <option value="false">Inactivo</option>
+                                            <option value="pendiente">Pendiente</option>
+                                            <option value="autorizado">Autorizado</option>
+                                            <option value="no autorizado">No autorizado</option>
                                         </select>
                                     </div>
                                 </div>
