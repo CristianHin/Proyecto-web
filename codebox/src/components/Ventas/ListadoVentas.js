@@ -1,15 +1,19 @@
 import PurchaseContext from '../../context/ventas/PurchaseContext';
 import { Fragment, useContext, useEffect, useState } from "react";
+import AlertContext from "../../context/alerts/AlertContext";
 import { Link } from "react-router-dom";
+import Alert from "../includes/Alert";
 import './ListadoVentas.css';
 import axios from 'axios';
 
-const ListadoVentas = () => {
+const ListadoVentas = (props) => {
 
     //Extraer ventas del state inicial
     const purchasesContext = useContext(PurchaseContext);
-
     const { purchases, getPurchases } = purchasesContext;
+
+    const alertsContext = useContext(AlertContext);
+    const { alert, closeAlert } = alertsContext;
 
     const [optionFilter, setOptionFilter] = useState('idVenta');
     const [filter, setFilter] = useState('');
@@ -26,6 +30,14 @@ const ListadoVentas = () => {
 
         consultAPI();
     }, []);
+
+    useEffect(() => {
+        if (alert) {
+            setTimeout(() => {
+                closeAlert();
+            }, 5000);
+        }
+    }, [alert]);
 
     //Obtener ventas cuando el valor del input o select del filtro cambien
     useEffect(() => {
@@ -50,6 +62,19 @@ const ListadoVentas = () => {
 
     return ( 
         <Fragment>
+            {
+                alert
+                ? 
+                    <Alert 
+                        alertType="success"
+                        alertHeader="¡Guardado!" 
+                        alertBody={ props.location.state === 'create' 
+                            ? 'El registro ha sido agregado con éxito' 
+                            : 'Los cambios se han guardado con éxito' } 
+                    />
+                :
+                    null
+            }
             <section className="main-container">
                 <div className="cards">
                     <div className="card card-caption">
@@ -90,7 +115,7 @@ const ListadoVentas = () => {
                                         <th>Id venta</th>
                                         <th>Id cliente</th>
                                         <th>Nombre cliente</th>
-                                        <th>Fecha venta</th>
+                                        <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -102,7 +127,11 @@ const ListadoVentas = () => {
                                                     <td>{ purchase._id }</td>
                                                     <td>{ purchase.client_id }</td>
                                                     <td>{ purchase.client_name }</td>
-                                                    <td>{ purchase.date.substring(0, 10) }</td>
+                                                    <td>
+                                                        <span className={ `tag-status ${ purchase.status == 'en proceso' ? 'pending' : purchase.status == 'entregada' ? 'paid' : 'cancelled' }` }>
+                                                            { purchase.status == 'en proceso' ? 'en proceso' : purchase.status == 'entregada' ? 'entregada' : 'cancelada' }
+                                                        </span>
+                                                    </td>
                                                     <td className="action">
                                                     <Link to="/ventas/editar" className="editar">
                                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>   
@@ -121,26 +150,6 @@ const ListadoVentas = () => {
                                     <a href="#" className="button button-pagination">Siguiente</a>
                                 </div>
                             </div> */}
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-header">
-                            <h3>Vista Previa de Venta</h3>
-                            <a href="#" className="button button-show">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Ver más</a>
-                        </div>
-                        <div className="card-body">
-                            <h3 className="label-info">Fecha</h3>
-                            <p className="content-info">29/09/2021</p>
-                            <h3 className="label-info">Productos Vendidos</h3>
-                            <p className="content-info">34</p>
-                            <h3 className="label-info">Impuesto</h3>
-                            <p className="content-info">19%</p>
-                            <h3 className="label-info">Descuento</h3>
-                            <p className="content-info">No</p>
-                            <h3 className="label-info">Total</h3>
-                            <p className="content-info">$10.342.820</p>
                         </div>
                     </div>
                 </div>

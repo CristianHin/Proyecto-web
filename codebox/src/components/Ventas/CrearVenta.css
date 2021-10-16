@@ -80,6 +80,10 @@ hr {
     background-color: rgba(219, 234, 254, 1);
 }
 
+td.empty {
+    text-align: center;
+}
+
 @media screen and (max-width: 768px) {
     .form-section {
         grid-template-columns: 1fr;

@@ -112,9 +112,9 @@ const Productos = (props) => {
                                 <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Nombre</th>
                                         <th colSpan="2">Descripción</th>
-                                        <th>Stock (P/U)</th>
+                                        <th>Precio</th>
+                                        <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -126,9 +126,13 @@ const Productos = (props) => {
                                                 return (
                                                     <tr key={ product._id }>
                                                         <td>{ product._id }</td>
-                                                        <td>{ product.name }</td>
                                                         <td colSpan="2">{ product.description }</td>
-                                                        <td>{ product.stock }</td>
+                                                        <td>{ product.price }</td>
+                                                        <td>
+                                                            <span className={ `tag-status ${ product.status == 'disponible' ? 'paid' : 'cancelled' }` }>
+                                                                { product.status == 'disponible' ? 'disponible' : 'no disponible' }
+                                                            </span>
+                                                        </td>
                                                         <td className="action">
                                                             <Link 
                                                                 to={{
@@ -158,7 +162,7 @@ const Productos = (props) => {
                             </div> */}
                         </div>
                     </div>
-                    <div className="card">
+                    {/* <div className="card">
                         <div className="card-header">
                             <h3>Vista Previa de Producto</h3>
                             <a href="#" className="button button-show">
@@ -173,7 +177,7 @@ const Productos = (props) => {
                             <h3 className="label-info">Precio</h3>
                             <p className="content-info">$1.800.000</p>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </section>
         </Fragment>

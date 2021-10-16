@@ -63,19 +63,6 @@ const ListadoUsuarios = () => {
                     <div className="card">
                         <div className="card-header">
                             <h3>Información general</h3>
-                            <div className="input-group">
-                                {/* <select>
-                                    <option>5</option>
-                                    <option>10</option>
-                                    <option>25</option>
-                                </select> */}
-                                <select>
-                                    <option>ID Usuario</option>
-                                    <option>Nombre</option>
-                                    <option>Rol</option>
-                                </select>
-                                <input type="search" placeholder="Buscar..."></input>
-                            </div>
                         </div>
                         <div className="card-body">
                             <table>
@@ -97,8 +84,8 @@ const ListadoUsuarios = () => {
                                                     <td>{ user.name }</td>
                                                     <td className="role">{ user.role }</td>
                                                     <td>
-                                                        <span className={ `tag-status ${ user.status ? 'paid' : 'cancelled' }` }>
-                                                            { user.status ? 'Activo' : 'Inactivo' }
+                                                        <span className={ `tag-status ${ user.status == 'pendiente' ? 'pending' : user.status == 'autorizado' ? 'paid' : 'cancelled' }` }>
+                                                            { user.status == 'pendiente' ? 'pendiente' : user.status == 'autorizado' ? 'autorizado' : 'no autorizado' }
                                                         </span>
                                                     </td>
                                                     <td className="action">
@@ -124,24 +111,6 @@ const ListadoUsuarios = () => {
                                     <a href="#" className="button button-pagination">Siguiente</a>
                                 </div>
                             </div> */}
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-header">
-                            <h3>Vista Previa de Usuario</h3>
-                            <a href="#" className="button button-show">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Ver más</a>
-                        </div>
-                        <div className="card-body">
-                            <h3 className="label-info">Miembro desde</h3>
-                            <p className="content-info">29/09/2021</p>
-                            <h3 className="label-info">Email</h3>
-                            <p className="content-info">juanmolina10@gmail.com</p>
-                            <h3 className="label-info">Ventas</h3>
-                            <p className="content-info">54</p>
-                            <h3 className="label-info">Productos</h3>
-                            <p className="content-info">18</p>
                         </div>
                     </div>
                 </div>
