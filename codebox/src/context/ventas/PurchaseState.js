@@ -9,7 +9,7 @@ import {
 const PurchaseState = props => {
 
     const initialState = {
-        purchases: []
+        purchases: [],
     }
 
     //Dispatch para ejecutar las acciones
@@ -29,7 +29,7 @@ const PurchaseState = props => {
         <PurchaseContext.Provider
             value={{
                 purchases: state.purchases,
-                getPurchases
+                getPurchases,
             }}
         >
             { props.children }

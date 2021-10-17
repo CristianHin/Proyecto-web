@@ -1,5 +1,7 @@
 import {
-    OBTENER_VENTAS
+    OBTENER_VENTAS,
+    FORMULARIO_PRODUCTOS_VACIO,
+    PRODUCTO_NO_EXISTE,
 } from '../../types';
 
 export default (state, action) => {
