@@ -148,7 +148,9 @@ const Productos = (props) => {
                                             })
                                         :
                                             <tr>
-                                                <td colSpan="5">No hay productos registrados en el sistema</td>
+                                                <td colSpan="6" className="empty">
+                                                    No hay productos registrados en el sistema
+                                                </td>
                                             </tr>
                                     }
                                 </tbody>

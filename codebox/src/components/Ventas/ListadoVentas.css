@@ -73,6 +73,7 @@
 
 .card .button {
     display: inline-flex;
+    align-items: center;
     padding: .5rem .75rem;
     text-decoration: none;
     font-family: 'Maven Pro', sans-serif;

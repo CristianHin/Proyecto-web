@@ -6,24 +6,21 @@ import {
     VALIDAR_FORMULARIO,
     MOSTRAR_ALERTA,
     CERRAR_ALERTA,
+    FORMULARIO_PRODUCTOS_VACIO,
+    PRODUCTO_NO_EXISTE,
 } from '../../types';
 
 const AlertState = props => {
 
     const initialState = {
-        errorform: false,
         alert: false,
+        errorform: false,
+        errorformempty: false,
+        errornoexists: false,
     }
 
     //Dispatch para ejecutar las acciones
     const [state, dispatch] = useReducer(AlertReducer, initialState)
-
-    //Validar formulario
-    const showError = () => {
-        dispatch({
-            type: VALIDAR_FORMULARIO
-        });
-    };
 
     //Mostrar alerta
     const showAlert = () => {
@@ -39,14 +36,39 @@ const AlertState = props => {
         })
     };
 
+    //Validar formulario
+    const showError = () => {
+        dispatch({
+            type: VALIDAR_FORMULARIO
+        });
+    };
+
+    //Error de formulario de productos vacío
+    const showErrorEmpty = () => {
+        dispatch({
+            type: FORMULARIO_PRODUCTOS_VACIO
+        });
+    };
+
+    //Error de producto inexistente
+    const showErrorNoExists = () => {
+        dispatch({
+            type: PRODUCTO_NO_EXISTE
+        });
+    };
+
     return (
         <AlertContext.Provider
             value={{
-                errorform: state.errorform,
                 alert: state.alert,
-                showError,
+                errorform: state.errorform,
+                errorformempty: state.errorformempty,
+                errornoexists: state.errornoexists,
                 showAlert,
-                closeAlert
+                closeAlert,
+                showError,
+                showErrorEmpty,
+                showErrorNoExists,
             }}
         >
             { props.children }

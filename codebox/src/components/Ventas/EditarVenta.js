@@ -12,7 +12,7 @@ const EditarVenta = (props) => {
     const { products, getProducts } = productsContext;
 
     const alertsContext = useContext(AlertContext);
-    const { errorform, showAlert, closeAlert, showError } = alertsContext;
+    const { errorform, errorformempty, errornoexists, showAlert, closeAlert, showError, showErrorEmpty, showErrorNoExists } = alertsContext;
     
     const { _id, date, total, status, client_id, client_name } = props.location.state;
     
@@ -33,12 +33,12 @@ const EditarVenta = (props) => {
     }, []);
     
     useEffect(() => {
-        if (errorform) {
+        if (errorform || errorformempty || errornoexists) {
             setTimeout(() => {
                 closeAlert();
             }, 5000);
         }
-    }, [errorform]);
+    }, [errorform, errorformempty, errornoexists]);
 
     const [productTmp, setProductTmp] = useState({
         product_id: '',
@@ -49,6 +49,8 @@ const EditarVenta = (props) => {
     const { product_id, product_price, product_quantity } = productTmp;
     
     const [productsPurchased, setProductsPurchased] = useState([]);
+
+    const [edit, setEdit] = useState(false);
 
     const [purchase, setPurchase] = useState({
         date: date.substring(0, 10),
@@ -78,13 +80,15 @@ const EditarVenta = (props) => {
     const addProduct = () => {
         
         if (product_id.trim() === '' || product_price.trim() === '' || product_quantity.trim() === '') {
-            return alert('El id, el precio y la cantidad del producto son requeridos');
+            return showErrorEmpty();
+            //return alert('El id, el precio y la cantidad del producto son requeridos');
         }
 
         let result = products.filter(product => product._id == product_id);
 
         if (result.length === 0) {
-            return alert('No hay productos con este id');
+            return showErrorNoExists();
+            //return alert('No hay productos con este id');
         }
 
         setProductTmp({
@@ -110,6 +114,43 @@ const EditarVenta = (props) => {
         setProductsPurchased([
             ...newProducts
         ]);
+        //En caso de que el producto a editar sea eliminado limpiamos el estado y cambiamos el botón
+        if (id === productTmp.product_id) {
+            //Limpiamos el estado del producto temporal
+            setProductTmp({
+                product_id: '',
+                product_price: '',
+                product_quantity: '',
+            });
+            //Cambiamos el botón
+            setEdit(false);
+        }
+    };
+
+    const fillForm = (id, e) => {
+        //Obtenemos el producto a editar
+        let result = productsPurchased.filter(product => product.product_id == id);
+        //Aplicamos destructuring al array resultado
+        const [ productEdit ] = result;
+        //Llenamos el state con la información del producto
+        setProductTmp(productEdit);
+        //Cambiamos el botón
+        setEdit(true);
+    };
+
+    const editProduct = () => {
+        //Actualizamos el producto
+        setProductsPurchased(
+            productsPurchased.map(product => product.product_id === productTmp.product_id ? productTmp : product)
+        );
+        //Limpiamos el estado del producto temporal
+        setProductTmp({
+            product_id: '',
+            product_price: '',
+            product_quantity: '',
+        });
+        //Cambiamos el botón
+        setEdit(false);
     };
 
     const updatePurchase = e => {
@@ -143,6 +184,14 @@ const EditarVenta = (props) => {
                 errorform
                 ?
                     <Alert alertType="cancel" alertHeader="¡Error!" alertBody="Todos los campos son requeridos" />
+                :
+                errorformempty
+                ?
+                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="El id, el precio y la cantidad son requeridos" />
+                :
+                errornoexists
+                ?
+                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="No existe un producto con este id" />
                 :
                     ''
             }
@@ -194,21 +243,21 @@ const EditarVenta = (props) => {
                                 <h3 className="label-info">Información del cliente</h3>
                                 <div className="form-section">
                                     <div className="form-group">
-                                        <label htmlFor="clientId">ID Cliente</label>
+                                        <label htmlFor="client_id">ID Cliente</label>
                                         <input 
                                             type="text" 
-                                            id="clientId" 
-                                            name="clientId" 
+                                            id="client_id" 
+                                            name="client_id" 
                                             onChange={ changePurchase }
                                             value={ purchase.client_id }
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="clientName">Nombre</label>
+                                        <label htmlFor="client_name">Nombre</label>
                                         <input 
                                             type="text" 
-                                            id="clientName" 
-                                            name="clientName"
+                                            id="client_name" 
+                                            name="client_name"
                                             onChange={ changePurchase }
                                             value={ purchase.client_name }
                                         />
@@ -247,14 +296,27 @@ const EditarVenta = (props) => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <button 
-                                            type="button" 
-                                            className="button button-add"
-                                            onClick={ addProduct }
-                                        >
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                                            Agregar
-                                        </button>
+                                        {
+                                            edit
+                                            ?
+                                                <button 
+                                                    type="button" 
+                                                    className="button button-show"
+                                                    onClick={ editProduct }
+                                                >
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                                    Editar
+                                                </button>
+                                            :    
+                                            <button 
+                                                type="button" 
+                                                className="button button-add"
+                                                onClick={ addProduct }
+                                            >
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                Agregar
+                                            </button>
+                                        }
                                     </div>
                                 </div>
                                 <table>
@@ -283,6 +345,13 @@ const EditarVenta = (props) => {
                                                         <td>{ product.product_quantity }</td>
                                                         <td>{ product.product_price }</td>
                                                         <td className="action">
+                                                            <button 
+                                                                type="button" 
+                                                                onClick={(e) => fillForm(product.product_id, e)} 
+                                                                className="editar"
+                                                            >
+                                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                                            </button>
                                                             <button 
                                                                 type="button" 
                                                                 onClick={(e) => deleteProduct(product.product_id, e)} 
