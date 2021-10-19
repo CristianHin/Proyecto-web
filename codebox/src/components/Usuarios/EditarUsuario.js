@@ -44,7 +44,7 @@ const EditarUsuario = (props) => {
         }
 
         //Actualizar usuario
-        axios.patch(`http://localhost:8080/api/usuarios/${_id}`, user)
+        axios.patch(`https://code-box-api.herokuapp.com/api/usuarios/${_id}`, user)
             .then(res => {
                 showAlert();
                 history.push({

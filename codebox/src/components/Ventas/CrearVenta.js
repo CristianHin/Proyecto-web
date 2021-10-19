@@ -29,11 +29,13 @@ const CrearVenta = () => {
     }, []);
 
     useEffect(() => {
-        if (errorform || errorformempty || errornoexists) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
     }, [errorform, errorformempty, errornoexists]);
 
     let history = useHistory();
@@ -80,6 +82,7 @@ const CrearVenta = () => {
     const addProduct = () => {
         
         if (product_id.trim() === '' || product_price.trim() === '' || product_quantity.trim() === '') {
+            closeAlert();
             return showErrorEmpty();
             //return alert('El id, el precio y la cantidad del producto son requeridos');
         }
@@ -87,6 +90,7 @@ const CrearVenta = () => {
         let result = products.filter(product => product._id == product_id);
 
         if (result.length === 0) {
+            closeAlert();
             return showErrorNoExists();
             //return alert('No hay productos con este id');
         }
@@ -161,13 +165,14 @@ const CrearVenta = () => {
         //Validar formulario
         if (_id.trim() === '' || date.trim() === '' || total.trim() === '' || status.trim() === '' 
             || client_id.trim() === '' || client_name.trim() === '' || productsPurchased.length === 0) {
+            closeAlert();
             return showError();
         }
 
         let purchaseFinal = { ...purchase, products: productsPurchased};
 
         //Crear venta
-        axios.post('http://localhost:8080/api/ventas', purchaseFinal)
+        axios.post('https://code-box-api.herokuapp.com/api/ventas', purchaseFinal)
             .then(res => {
                 showAlert();
                 history.push({

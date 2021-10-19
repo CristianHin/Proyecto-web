@@ -51,7 +51,7 @@ const AgregarProducto = () => {
         }
 
         //Crear producto
-        axios.post('http://localhost:8080/api/productos', product)
+        axios.post('https://code-box-api.herokuapp.com/api/productos', product)
             .then(res => {
                 showAlert();
                 history.push({

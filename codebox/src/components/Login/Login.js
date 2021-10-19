@@ -9,7 +9,7 @@ const Login = () => {
     console.log(respuesta);
     axios({
       method: "POST",
-      url: "http://localhost:8080/api/googlelogin",
+      url: "https://code-box-api.herokuapp.com/api/googlelogin",
       data: { tokenId: respuesta.tokenId }
     }).then(res => {
       console.log('Google Login exitoso', res);

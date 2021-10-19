@@ -22,7 +22,7 @@ const EditarVenta = (props) => {
         ]);
 
         const consultAPI = async () => {
-            const url = 'http://localhost:8080/api/productos';
+            const url = 'https://code-box-api.herokuapp.com/api/productos';
     
             const results = await axios.get(url);
 
@@ -33,11 +33,13 @@ const EditarVenta = (props) => {
     }, []);
     
     useEffect(() => {
-        if (errorform || errorformempty || errornoexists) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
     }, [errorform, errorformempty, errornoexists]);
 
     const [productTmp, setProductTmp] = useState({
@@ -80,6 +82,7 @@ const EditarVenta = (props) => {
     const addProduct = () => {
         
         if (product_id.trim() === '' || product_price.trim() === '' || product_quantity.trim() === '') {
+            closeAlert();
             return showErrorEmpty();
             //return alert('El id, el precio y la cantidad del producto son requeridos');
         }
@@ -87,6 +90,7 @@ const EditarVenta = (props) => {
         let result = products.filter(product => product._id == product_id);
 
         if (result.length === 0) {
+            closeAlert();
             return showErrorNoExists();
             //return alert('No hay productos con este id');
         }
@@ -159,13 +163,14 @@ const EditarVenta = (props) => {
         //Validar formulario
         if (purchase.date.trim() === '' || purchase.total.trim() === '' || purchase.status.trim() === '' 
             || purchase.client_id.trim() === '' || purchase.client_name.trim() === '' || productsPurchased.length === 0) {
+            closeAlert();
             return showError();
         }
 
         let purchaseFinal = { ...purchase, products: productsPurchased};
 
         //Actualizar venta
-        axios.patch('http://localhost:8080/api/ventas/' + _id, purchaseFinal)
+        axios.patch('https://code-box-api.herokuapp.com/api/ventas/' + _id, purchaseFinal)
             .then(res => {
                 showAlert();
                 history.push({

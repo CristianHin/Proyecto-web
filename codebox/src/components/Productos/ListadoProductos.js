@@ -21,7 +21,7 @@ const Productos = (props) => {
     //Obtener productos cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'http://localhost:8080/api/productos';
+            const url = 'https://code-box-api.herokuapp.com/api/productos';
     
             const results = await axios.get(url);
 
@@ -42,7 +42,7 @@ const Productos = (props) => {
     //Obtener productos cuando el valor del input o select del filtro cambien
     useEffect(() => {
         const consultAPI = async (fil, opt) => {
-            const url = `http://localhost:8080/api/productos?${opt}=${fil}`;
+            const url = `https://code-box-api.herokuapp.com/api/productos?${opt}=${fil}`;
             
             const results = await axios.get(url);
 

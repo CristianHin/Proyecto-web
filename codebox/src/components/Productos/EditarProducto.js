@@ -50,7 +50,7 @@ const EditarProducto = (props) => {
         }
 
         //Actualizar producto
-        axios.patch(`http://localhost:8080/api/productos/${_id}`, product)
+        axios.patch(`https://code-box-api.herokuapp.com/api/productos/${_id}`, product)
             .then(res => {
                 showAlert();
                 history.push({

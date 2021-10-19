@@ -21,7 +21,7 @@ const ListadoVentas = (props) => {
     //Obtener purchases cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'http://localhost:8080/api/ventas';
+            const url = 'https://code-box-api.herokuapp.com/api/ventas';
     
             const results = await axios.get(url);
 
@@ -42,7 +42,7 @@ const ListadoVentas = (props) => {
     //Obtener ventas cuando el valor del input o select del filtro cambien
     useEffect(() => {
         const consultAPI = async (fil, opt) => {
-            const url = `http://localhost:8080/api/ventas?${opt}=${fil}`;
+            const url = `https://code-box-api.herokuapp.com/api/ventas?${opt}=${fil}`;
             
             const results = await axios.get(url);
 

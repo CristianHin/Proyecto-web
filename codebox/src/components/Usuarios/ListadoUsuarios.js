@@ -17,7 +17,7 @@ const ListadoUsuarios = () => {
     //Obtener usuarios cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'http://localhost:8080/api/usuarios';
+            const url = 'https://code-box-api.herokuapp.com/api/usuarios';
     
             const results = await axios.get(url);
 
