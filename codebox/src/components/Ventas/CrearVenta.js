@@ -2,8 +2,8 @@ import ProductContext from "../../context/productos/ProductContext";
 import { Fragment, useState, useEffect, useContext } from 'react';
 import AlertContext from '../../context/alerts/AlertContext';
 import { useHistory } from 'react-router-dom';
+import clientAxios from '../../config/axios';
 import Alert from '../includes/Alert';
-import axios from "axios";
 import './CrearVenta.css';
 
 const CrearVenta = () => {
@@ -18,9 +18,9 @@ const CrearVenta = () => {
     //Obtener productos cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'http://localhost:8080/api/productos';
+            //const url = 'http://localhost:8080/api/productos';
     
-            const results = await axios.get(url);
+            const results = await clientAxios.get('/productos');
 
             getProducts(results.data.products);
         }
@@ -172,7 +172,7 @@ const CrearVenta = () => {
         let purchaseFinal = { ...purchase, products: productsPurchased};
 
         //Crear venta
-        axios.post('https://code-box-api.herokuapp.com/api/ventas', purchaseFinal)
+        clientAxios.post('/ventas', purchaseFinal)
             .then(res => {
                 showAlert('success', '¡Guardado!', 'El registro ha sido agregado con éxito');
                 history.push({

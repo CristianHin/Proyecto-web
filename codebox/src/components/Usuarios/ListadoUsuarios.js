@@ -1,10 +1,10 @@
 import UserContext from "../../context/usuarios/UserContext";
 import AlertContext from "../../context/alerts/AlertContext";
 import { Fragment, useContext, useEffect } from "react";
+import clientAxios from '../../config/axios';
 import { Link } from "react-router-dom";
 import Alert from "../includes/Alert";
 import './ListadoUsuarios.css';
-import axios from "axios";
 
 const ListadoUsuarios = () => {
 
@@ -17,9 +17,9 @@ const ListadoUsuarios = () => {
     //Obtener usuarios cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'https://code-box-api.herokuapp.com/api/usuarios';
+            //const url = 'https://code-box-api.herokuapp.com/api/usuarios';
     
-            const results = await axios.get(url);
+            const results = await clientAxios.get('/usuarios');
 
             getUsers(results.data.users);
         }

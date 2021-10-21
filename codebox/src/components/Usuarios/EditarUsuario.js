@@ -1,8 +1,8 @@
 import React, {Fragment, useState, useEffect, useContext} from 'react';
 import AlertContext from "../../context/alerts/AlertContext";
+import clientAxios from '../../config/axios';
 import { useHistory } from 'react-router';
 import Alert from '../includes/Alert';
-import axios from 'axios';
 
 const EditarUsuario = (props) => {
 
@@ -48,7 +48,7 @@ const EditarUsuario = (props) => {
         }
 
         //Actualizar usuario
-        axios.patch(`https://code-box-api.herokuapp.com/api/usuarios/${_id}`, user)
+        clientAxios.patch(`/usuarios/${_id}`, user)
             .then(res => {
                 showAlert('success', '¡Guardado!', 'Los cambios se han guardado con éxito');
                 history.push({

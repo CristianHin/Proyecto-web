@@ -2,9 +2,9 @@ import ProductContext from '../../context/productos/ProductContext';
 import { useState, useContext, useEffect, Fragment } from 'react';
 import AlertContext from '../../context/alerts/AlertContext';
 import { useHistory } from 'react-router-dom';
+import clientAxios from '../../config/axios';
 import Alert from '../includes/Alert';
 import './AgregarProducto.css'
-import axios from 'axios';
 
 const AgregarProducto = () => {
 
@@ -55,7 +55,7 @@ const AgregarProducto = () => {
         }
 
         //Crear producto
-        axios.post('https://code-box-api.herokuapp.com/api/productos', product)
+        clientAxios.post('/productos', product)
             .then(res => {
                 showAlert('success', '¡Guardado!', 'El registro ha sido agregado con éxito');
                 history.push({

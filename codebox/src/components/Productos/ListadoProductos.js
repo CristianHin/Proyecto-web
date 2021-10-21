@@ -1,10 +1,11 @@
 import ProductContext from "../../context/productos/ProductContext";
 import { Fragment, useState, useContext, useEffect } from "react";
 import AlertContext from "../../context/alerts/AlertContext";
+import clientAxios from '../../config/axios';
 import { Link } from "react-router-dom";
 import Alert from "../includes/Alert";
 import './ListadoProductos.css';
-import axios from 'axios';
+
 
 const Productos = () => {
 
@@ -21,9 +22,9 @@ const Productos = () => {
     //Obtener productos cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'https://code-box-api.herokuapp.com/api/productos';
+            //const url = 'https://code-box-api.herokuapp.com/api/productos';
     
-            const results = await axios.get(url);
+            const results = await clientAxios.get('/productos');
 
             getProducts(results.data.products);
         }
@@ -44,9 +45,9 @@ const Productos = () => {
     //Obtener productos cuando el valor del input o select del filtro cambien
     useEffect(() => {
         const consultAPI = async (fil, opt) => {
-            const url = `https://code-box-api.herokuapp.com/api/productos?${opt}=${fil}`;
+            //const url = `https://code-box-api.herokuapp.com/api/productos?${opt}=${fil}`;
             
-            const results = await axios.get(url);
+            const results = await clientAxios.get(`/productos?${opt}=${fil}`);
 
             getProducts(results.data.products);
         };

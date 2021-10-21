@@ -1,10 +1,10 @@
 import PurchaseContext from '../../context/ventas/PurchaseContext';
 import { Fragment, useContext, useEffect, useState } from "react";
 import AlertContext from "../../context/alerts/AlertContext";
+import clientAxios from '../../config/axios';
 import { Link } from "react-router-dom";
 import Alert from "../includes/Alert";
 import './ListadoVentas.css';
-import axios from 'axios';
 
 const ListadoVentas = () => {
 
@@ -21,9 +21,9 @@ const ListadoVentas = () => {
     //Obtener purchases cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'https://code-box-api.herokuapp.com/api/ventas';
+            //const url = 'https://code-box-api.herokuapp.com/api/ventas';
     
-            const results = await axios.get(url);
+            const results = await clientAxios.get('/ventas');
 
             getPurchases(results.data.purchases);
         }
@@ -44,9 +44,9 @@ const ListadoVentas = () => {
     //Obtener ventas cuando el valor del input o select del filtro cambien
     useEffect(() => {
         const consultAPI = async (fil, opt) => {
-            const url = `https://code-box-api.herokuapp.com/api/ventas?${opt}=${fil}`;
+            //const url = `https://code-box-api.herokuapp.com/api/ventas?${opt}=${fil}`;
             
-            const results = await axios.get(url);
+            const results = await clientAxios.get(`/ventas?${opt}=${fil}`);
 
             getPurchases(results.data.purchases);
         };

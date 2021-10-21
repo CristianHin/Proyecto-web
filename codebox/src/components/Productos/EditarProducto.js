@@ -2,9 +2,9 @@ import ProductContext from '../../context/productos/ProductContext';
 import { Fragment, useState, useContext, useEffect } from 'react';
 import AlertContext from "../../context/alerts/AlertContext";
 import { useHistory } from 'react-router-dom';
+import clientAxios from '../../config/axios';
 import Alert from '../includes/Alert';
 import './AgregarProducto.css';
-import axios from 'axios';
 
 const EditarProducto = (props) => {
 
@@ -54,7 +54,7 @@ const EditarProducto = (props) => {
         }
 
         //Actualizar producto
-        axios.patch(`https://code-box-api.herokuapp.com/api/productos/${_id}`, product)
+        clientAxios.patch(`/productos/${_id}`, product)
             .then(res => {
                 showAlert('success', '¡Guardado!', 'Los cambios se han guardado con éxito');
                 history.push({

@@ -16,32 +16,44 @@ import AlertState from '../../context/alerts/AlertState';
 import ProductState from '../../context/productos/ProductState';
 import PurchaseState from '../../context/ventas/PurchaseState';
 import UserState from '../../context/usuarios/UserState';
+import AuthState from '../../context/auth/AuthState';
+
+import PrivateRoute from "../routes/PrivateRoute";
+import tokenAuth from "../../config/token";
+
+//Revisar si tenemos un token
+const token = localStorage.getItem('token');
+if (token) {
+  tokenAuth(token);
+}
 
 const App = () => {
     return (
       <div className="App">
-        <PurchaseState>
-          <UserState>
-            <ProductState>
-              <AlertState>
-                <Router>
-                  <NavigationMenu />
-                  <Switch>
-                    <Route path="/login" exact component={ Login }></Route>
-                    <Route path="/ventas" exact component={ ListadoVentas }></Route>
-                    <Route path="/ventas/crear" exact component={ CrearVenta }></Route>
-                    <Route path="/ventas/editar/:id" exact component={ EditarVenta }></Route>
-                    <Route path="/usuarios" exact component={ ListadoUsuarios }></Route>
-                    <Route path="/usuarios/editar/:id" exact component={ EditarUsuario }></Route>
-                    <Route path="/productos" exact component={ ListadoProductos }></Route>
-                    <Route path="/productos/agregar" exact component={ AgregarProducto }></Route>
-                    <Route path="/productos/editar/:id" exact component={ EditarProducto }></Route>
-                  </Switch>
-                </Router>
-              </AlertState>
-            </ProductState>
-          </UserState>
-        </PurchaseState>
+        <AuthState>
+          <PurchaseState>
+            <UserState>
+              <ProductState>
+                <AlertState>
+                  <Router>
+                    <NavigationMenu />
+                    <Switch>
+                      <Route path="/" exact component={ Login } />
+                      <PrivateRoute path="/ventas" exact component={ ListadoVentas } />
+                      <PrivateRoute path="/ventas/crear" exact component={ CrearVenta } />
+                      <PrivateRoute path="/ventas/editar/:id" exact component={ EditarVenta } />
+                      <PrivateRoute path="/usuarios" exact component={ ListadoUsuarios } />
+                      <PrivateRoute path="/usuarios/editar/:id" exact component={ EditarUsuario } />
+                      <PrivateRoute path="/productos" exact component={ ListadoProductos } />
+                      <PrivateRoute path="/productos/agregar" exact component={ AgregarProducto } />
+                      <PrivateRoute path="/productos/editar/:id" exact component={ EditarProducto } />
+                    </Switch>
+                  </Router>
+                </AlertState>
+              </ProductState>
+            </UserState>
+          </PurchaseState>
+        </AuthState>
       </div>
     )
 }

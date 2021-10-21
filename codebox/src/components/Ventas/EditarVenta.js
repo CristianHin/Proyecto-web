@@ -2,8 +2,8 @@ import ProductContext from "../../context/productos/ProductContext";
 import { Fragment, useState, useContext, useEffect } from 'react';
 import AlertContext from "../../context/alerts/AlertContext";
 import { useHistory } from 'react-router-dom';
+import clientAxios from '../../config/axios';
 import Alert from '../includes/Alert';
-import axios from 'axios';
 
 const EditarVenta = (props) => {
 
@@ -22,9 +22,9 @@ const EditarVenta = (props) => {
         ]);
 
         const consultAPI = async () => {
-            const url = 'https://code-box-api.herokuapp.com/api/productos';
+            //const url = 'https://code-box-api.herokuapp.com/api/productos';
     
-            const results = await axios.get(url);
+            const results = await clientAxios.get('/productos');
 
             getProducts(results.data.products);
         }
@@ -170,7 +170,7 @@ const EditarVenta = (props) => {
         let purchaseFinal = { ...purchase, products: productsPurchased};
 
         //Actualizar venta
-        axios.patch('https://code-box-api.herokuapp.com/api/ventas/' + _id, purchaseFinal)
+        clientAxios.patch('/ventas/' + _id, purchaseFinal)
             .then(res => {
                 showAlert('success', '¡Guardado!', 'Los cambios se han guardado con éxito');
                 history.push({
