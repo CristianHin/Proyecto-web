@@ -12,7 +12,7 @@ const EditarVenta = (props) => {
     const { products, getProducts } = productsContext;
 
     const alertsContext = useContext(AlertContext);
-    const { errorform, errorformempty, errornoexists, showAlert, closeAlert, showError, showErrorEmpty, showErrorNoExists } = alertsContext;
+    const { alert, showAlert, closeAlert } = alertsContext;
     
     const { _id, date, total, status, client_id, client_name } = props.location.state;
     
@@ -40,7 +40,7 @@ const EditarVenta = (props) => {
         return () => {
             clearTimeout(timer);
         };
-    }, [errorform, errorformempty, errornoexists]);
+    }, [alert]);
 
     const [productTmp, setProductTmp] = useState({
         product_id: '',
@@ -83,7 +83,7 @@ const EditarVenta = (props) => {
         
         if (product_id.trim() === '' || product_price.trim() === '' || product_quantity.trim() === '') {
             closeAlert();
-            return showErrorEmpty();
+            return showAlert('cancel', '¡Error!', 'El id, el precio y la cantidad son requeridos');
             //return alert('El id, el precio y la cantidad del producto son requeridos');
         }
 
@@ -91,7 +91,7 @@ const EditarVenta = (props) => {
 
         if (result.length === 0) {
             closeAlert();
-            return showErrorNoExists();
+            return showAlert('cancel', '¡Error!', 'No existe un producto con este id');
             //return alert('No hay productos con este id');
         }
 
@@ -164,7 +164,7 @@ const EditarVenta = (props) => {
         if (purchase.date.trim() === '' || purchase.total.trim() === '' || purchase.status.trim() === '' 
             || purchase.client_id.trim() === '' || purchase.client_name.trim() === '' || productsPurchased.length === 0) {
             closeAlert();
-            return showError();
+            return showAlert('cancel', '¡Error!', 'Todos los campos son requeridos');
         }
 
         let purchaseFinal = { ...purchase, products: productsPurchased};
@@ -172,10 +172,9 @@ const EditarVenta = (props) => {
         //Actualizar venta
         axios.patch('https://code-box-api.herokuapp.com/api/ventas/' + _id, purchaseFinal)
             .then(res => {
-                showAlert();
+                showAlert('success', '¡Guardado!', 'Los cambios se han guardado con éxito');
                 history.push({
-                    pathname: '/ventas',
-                    state: 'update'
+                    pathname: '/ventas'
                 });
             })
             .catch(err => {
@@ -186,17 +185,9 @@ const EditarVenta = (props) => {
     return (
         <Fragment>
             {
-                errorform
+                alert
                 ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="Todos los campos son requeridos" />
-                :
-                errorformempty
-                ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="El id, el precio y la cantidad son requeridos" />
-                :
-                errornoexists
-                ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="No existe un producto con este id" />
+                    <Alert alertType={ alert.type } alertHeader={ alert.title } alertBody={ alert.msg } />
                 :
                     ''
             }

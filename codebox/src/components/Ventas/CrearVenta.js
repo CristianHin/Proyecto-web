@@ -13,7 +13,7 @@ const CrearVenta = () => {
     const { products, getProducts } = productsContext;
 
     const alertsContext = useContext(AlertContext);
-    const { errorform, errorformempty, errornoexists, showAlert, closeAlert, showError, showErrorEmpty, showErrorNoExists } = alertsContext;
+    const { alert, showAlert, closeAlert } = alertsContext;
 
     //Obtener productos cuando cargue el componente
     useEffect(() => {
@@ -36,7 +36,7 @@ const CrearVenta = () => {
         return () => {
             clearTimeout(timer);
         };
-    }, [errorform, errorformempty, errornoexists]);
+    }, [alert]);
 
     let history = useHistory();
 
@@ -83,7 +83,7 @@ const CrearVenta = () => {
         
         if (product_id.trim() === '' || product_price.trim() === '' || product_quantity.trim() === '') {
             closeAlert();
-            return showErrorEmpty();
+            return showAlert('cancel', '¡Error!', 'El id, el precio y la cantidad son requeridos');
             //return alert('El id, el precio y la cantidad del producto son requeridos');
         }
 
@@ -91,7 +91,7 @@ const CrearVenta = () => {
 
         if (result.length === 0) {
             closeAlert();
-            return showErrorNoExists();
+            return showAlert('cancel', '¡Error!', 'No existe un producto con este id');
             //return alert('No hay productos con este id');
         }
 
@@ -166,7 +166,7 @@ const CrearVenta = () => {
         if (_id.trim() === '' || date.trim() === '' || total.trim() === '' || status.trim() === '' 
             || client_id.trim() === '' || client_name.trim() === '' || productsPurchased.length === 0) {
             closeAlert();
-            return showError();
+            return showAlert('cancel', '¡Error!', 'Todos los campos son requeridos');
         }
 
         let purchaseFinal = { ...purchase, products: productsPurchased};
@@ -174,33 +174,25 @@ const CrearVenta = () => {
         //Crear venta
         axios.post('https://code-box-api.herokuapp.com/api/ventas', purchaseFinal)
             .then(res => {
-                showAlert();
+                showAlert('success', '¡Guardado!', 'El registro ha sido agregado con éxito');
                 history.push({
-                    pathname: '/ventas',
-                    state: 'create'
+                    pathname: '/ventas'
                 });
             })
             .catch(err => {
-                console.log(err);
+                closeAlert();
+                showAlert('cancel', '¡Error!', err.response.data.msg);
             });
     };
 
     return (
         <Fragment>
             {
-                errorform
+                alert
                 ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="Todos los campos son requeridos" />
+                    <Alert alertType={ alert.type } alertHeader={ alert.title } alertBody={ alert.msg } />
                 :
-                errorformempty
-                ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="El id, el precio y la cantidad son requeridos" />
-                :
-                errornoexists
-                ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="No existe un producto con este id" />
-                :
-                    ''
+                    null
             }
             <section className="main-container">
                 <div className="cards">

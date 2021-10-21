@@ -28,11 +28,13 @@ const ListadoUsuarios = () => {
     }, []);
 
     useEffect(() => {
-        if (alert) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
     }, [alert]);
 
     return ( 
@@ -40,11 +42,7 @@ const ListadoUsuarios = () => {
             {
                 alert
                 ? 
-                    <Alert 
-                        alertType="success"
-                        alertHeader="¡Guardado!" 
-                        alertBody="Los cambios se han guardado con éxito" 
-                    />
+                    <Alert alertType={ alert.type } alertHeader={ alert.title } alertBody={ alert.msg } />
                 :
                     null
             }

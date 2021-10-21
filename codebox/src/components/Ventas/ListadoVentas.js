@@ -6,7 +6,7 @@ import Alert from "../includes/Alert";
 import './ListadoVentas.css';
 import axios from 'axios';
 
-const ListadoVentas = (props) => {
+const ListadoVentas = () => {
 
     //Extraer ventas del state inicial
     const purchasesContext = useContext(PurchaseContext);
@@ -32,11 +32,13 @@ const ListadoVentas = (props) => {
     }, []);
 
     useEffect(() => {
-        if (alert) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
     }, [alert]);
 
     //Obtener ventas cuando el valor del input o select del filtro cambien
@@ -66,11 +68,9 @@ const ListadoVentas = (props) => {
                 alert
                 ? 
                     <Alert 
-                        alertType="success"
-                        alertHeader="¡Guardado!" 
-                        alertBody={ props.location.state === 'create' 
-                            ? 'El registro ha sido agregado con éxito' 
-                            : 'Los cambios se han guardado con éxito' } 
+                        alertType={ alert.type }
+                        alertHeader={ alert.title } 
+                        alertBody={ alert.msg } 
                     />
                 :
                     null
