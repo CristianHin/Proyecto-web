@@ -41,9 +41,9 @@ const EditarUsuario = (props) => {
         e.preventDefault();
 
         //Validar formulario
-        if (user.role.trim() === '' || user.status.trim() === '') {
+        if (user.status.trim() === '') {
             closeAlert();
-            showAlert('cancel', '¡Error!', 'Todos los campos son requeridos');
+            showAlert('cancel', '¡Error!', 'El campo estado es requerido');
             return ;
         }
 

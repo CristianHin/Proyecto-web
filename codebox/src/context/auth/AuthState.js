@@ -18,6 +18,7 @@ const AuthState = props => {
         token: localStorage.getItem('token'),
         authenticated: null,
         user: null,
+        message: null,
     }
 
     //Dispatch para ejecutar las acciones
@@ -40,7 +41,8 @@ const AuthState = props => {
             });
         } catch (error) {
             dispatch({
-                type: LOGIN_ERROR
+                type: LOGIN_ERROR,
+                payload: error.response.data.msg
             });
         }
     };
