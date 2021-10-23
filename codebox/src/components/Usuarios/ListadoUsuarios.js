@@ -1,10 +1,10 @@
 import UserContext from "../../context/usuarios/UserContext";
 import AlertContext from "../../context/alerts/AlertContext";
 import { Fragment, useContext, useEffect } from "react";
+import clientAxios from '../../config/axios';
 import { Link } from "react-router-dom";
 import Alert from "../includes/Alert";
 import './ListadoUsuarios.css';
-import axios from "axios";
 
 const ListadoUsuarios = () => {
 
@@ -17,9 +17,9 @@ const ListadoUsuarios = () => {
     //Obtener usuarios cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'http://localhost:8080/api/usuarios';
+            //const url = 'https://code-box-api.herokuapp.com/api/usuarios';
     
-            const results = await axios.get(url);
+            const results = await clientAxios.get('/usuarios');
 
             getUsers(results.data.users);
         }
@@ -28,11 +28,13 @@ const ListadoUsuarios = () => {
     }, []);
 
     useEffect(() => {
-        if (alert) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
     }, [alert]);
 
     return ( 
@@ -40,11 +42,7 @@ const ListadoUsuarios = () => {
             {
                 alert
                 ? 
-                    <Alert 
-                        alertType="success"
-                        alertHeader="¡Guardado!" 
-                        alertBody="Los cambios se han guardado con éxito" 
-                    />
+                    <Alert alertType={ alert.type } alertHeader={ alert.title } alertBody={ alert.msg } />
                 :
                     null
             }

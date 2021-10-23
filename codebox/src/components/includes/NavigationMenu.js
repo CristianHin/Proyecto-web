@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import AuthContext from '../../context/auth/AuthContext';
 import './NavigationMenu.css';
 import logo from './../Img/Codebox.jpg';
-import user from './../Img/user.png';
 import { Link } from 'react-router-dom';
 
 const NavigationMenu = () => {
-    const [showMenu, setShowMenu] = useState(false)
+
+    const authsContext = useContext(AuthContext);
+    const { user, authenticated, closeSession } = authsContext;
+
+    const [showMenu, setShowMenu] = useState(false);
 
     return (
         <header className="header-nav">
@@ -16,17 +20,32 @@ const NavigationMenu = () => {
                     </Link>
                 </div>
 
-                <nav className={ !showMenu ? 'main-nav nav-hidden' : 'main-nav nav-shown' }>
-                    <Link to="/ventas">Ventas</Link>
-                    <Link to="/productos">Productos</Link>
-                    <Link to="/usuarios">Usuarios</Link>
-                </nav>
+                {
+                    authenticated 
+                    ?
+                        <nav className={ !showMenu ? 'main-nav nav-hidden' : 'main-nav nav-shown' }>
+                            <Link to="/ventas">Ventas</Link>
+                            <Link to="/productos">Productos</Link>
+                            <Link to="/usuarios">Usuarios</Link>
+                        </nav>
+                    :
+                        null
+                }
             </div>
 
-            <div className="logout-nav">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                <img src={ user } alt="Avatar de usuario" />
-            </div>
+            {
+                authenticated 
+                ?
+                    <div className="logout-nav">
+                        <p><b>Hola</b>, { user.name }</p>
+                        {/* <img src={ user.imageUrl } alt="Avatar de usuario" /> */}
+                        <button onClick={ () => closeSession() }>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        </button>
+                    </div>
+                :
+                    null
+            }
             
             <div className="mobile-menu">
                 {

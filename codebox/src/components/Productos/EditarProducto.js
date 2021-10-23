@@ -2,9 +2,9 @@ import ProductContext from '../../context/productos/ProductContext';
 import { Fragment, useState, useContext, useEffect } from 'react';
 import AlertContext from "../../context/alerts/AlertContext";
 import { useHistory } from 'react-router-dom';
+import clientAxios from '../../config/axios';
 import Alert from '../includes/Alert';
 import './AgregarProducto.css';
-import axios from 'axios';
 
 const EditarProducto = (props) => {
 
@@ -13,7 +13,7 @@ const EditarProducto = (props) => {
     const { addProduct } = productsContext;
 
     const alertsContext = useContext(AlertContext);
-    const { errorform, showAlert, closeAlert, showError } = alertsContext;
+    const { alert, showAlert, closeAlert } = alertsContext;
     
     const { _id, description, price, status } = props.location.state;
 
@@ -24,12 +24,14 @@ const EditarProducto = (props) => {
     });
 
     useEffect(() => {
-        if (errorform) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
-    }, [errorform]);
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [alert]);
 
     let history = useHistory();
 
@@ -46,20 +48,22 @@ const EditarProducto = (props) => {
 
         //Validar formulario
         if (product.description.trim() === '' || product.price.trim() === '' || product.status.trim() === '') {
-            return showError();
+            closeAlert();
+            showAlert('cancel', '¡Error!', 'Todos los campos son requeridos');
+            return ;
         }
 
         //Actualizar producto
-        axios.patch(`http://localhost:8080/api/productos/${_id}`, product)
+        clientAxios.patch(`/productos/${_id}`, product)
             .then(res => {
-                showAlert();
+                showAlert('success', '¡Guardado!', 'Los cambios se han guardado con éxito');
                 history.push({
-                    pathname: '/productos',
-                    state: 'update'
+                    pathname: '/productos'
                 });
             })
             .catch(err => {
-                console.log(err);
+                closeAlert();
+                showAlert('cancel', '¡Error!', err.response.data.msg);
             });
 
         addProduct();
@@ -68,7 +72,7 @@ const EditarProducto = (props) => {
     return (
         <Fragment>
             {
-                errorform
+                alert
                 ?
                     <Alert alertType="cancel" alertHeader="¡Error!" alertBody="Todos los campos son requeridos" />
                 :

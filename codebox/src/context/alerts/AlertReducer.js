@@ -1,9 +1,6 @@
 import {
     MOSTRAR_ALERTA,
     CERRAR_ALERTA,
-    VALIDAR_FORMULARIO,
-    FORMULARIO_PRODUCTOS_VACIO,
-    PRODUCTO_NO_EXISTE,
 } from '../../types';
 
 export default (state, action) => {
@@ -11,30 +8,12 @@ export default (state, action) => {
         case MOSTRAR_ALERTA:
             return {
                 ...state,
-                alert: true
+                alert: action.payload
             }
             case CERRAR_ALERTA:
                 return {
                     ...state,
-                    alert: false,
-                    errorform: false,
-                    errorformempty: false,
-                    errornoexists: false
-                }
-            case VALIDAR_FORMULARIO:
-                return {
-                    ...state,
-                    errorform: true
-                }
-            case FORMULARIO_PRODUCTOS_VACIO:
-                return {
-                    ...state,
-                    errorformempty: true
-                }
-            case PRODUCTO_NO_EXISTE:
-                return {
-                    ...state,
-                    errornoexists: true
+                    alert: null,
                 }
         default: 
             return state;

@@ -2,8 +2,8 @@ import ProductContext from "../../context/productos/ProductContext";
 import { Fragment, useState, useEffect, useContext } from 'react';
 import AlertContext from '../../context/alerts/AlertContext';
 import { useHistory } from 'react-router-dom';
+import clientAxios from '../../config/axios';
 import Alert from '../includes/Alert';
-import axios from "axios";
 import './CrearVenta.css';
 
 const CrearVenta = () => {
@@ -13,14 +13,14 @@ const CrearVenta = () => {
     const { products, getProducts } = productsContext;
 
     const alertsContext = useContext(AlertContext);
-    const { errorform, errorformempty, errornoexists, showAlert, closeAlert, showError, showErrorEmpty, showErrorNoExists } = alertsContext;
+    const { alert, showAlert, closeAlert } = alertsContext;
 
     //Obtener productos cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'http://localhost:8080/api/productos';
+            //const url = 'http://localhost:8080/api/productos';
     
-            const results = await axios.get(url);
+            const results = await clientAxios.get('/productos');
 
             getProducts(results.data.products);
         }
@@ -29,12 +29,14 @@ const CrearVenta = () => {
     }, []);
 
     useEffect(() => {
-        if (errorform || errorformempty || errornoexists) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
-    }, [errorform, errorformempty, errornoexists]);
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [alert]);
 
     let history = useHistory();
 
@@ -80,14 +82,16 @@ const CrearVenta = () => {
     const addProduct = () => {
         
         if (product_id.trim() === '' || product_price.trim() === '' || product_quantity.trim() === '') {
-            return showErrorEmpty();
+            closeAlert();
+            return showAlert('cancel', '¡Error!', 'El id, el precio y la cantidad son requeridos');
             //return alert('El id, el precio y la cantidad del producto son requeridos');
         }
 
         let result = products.filter(product => product._id == product_id);
 
         if (result.length === 0) {
-            return showErrorNoExists();
+            closeAlert();
+            return showAlert('cancel', '¡Error!', 'No existe un producto con este id');
             //return alert('No hay productos con este id');
         }
 
@@ -161,41 +165,34 @@ const CrearVenta = () => {
         //Validar formulario
         if (_id.trim() === '' || date.trim() === '' || total.trim() === '' || status.trim() === '' 
             || client_id.trim() === '' || client_name.trim() === '' || productsPurchased.length === 0) {
-            return showError();
+            closeAlert();
+            return showAlert('cancel', '¡Error!', 'Todos los campos son requeridos');
         }
 
         let purchaseFinal = { ...purchase, products: productsPurchased};
 
         //Crear venta
-        axios.post('http://localhost:8080/api/ventas', purchaseFinal)
+        clientAxios.post('/ventas', purchaseFinal)
             .then(res => {
-                showAlert();
+                showAlert('success', '¡Guardado!', 'El registro ha sido agregado con éxito');
                 history.push({
-                    pathname: '/ventas',
-                    state: 'create'
+                    pathname: '/ventas'
                 });
             })
             .catch(err => {
-                console.log(err);
+                closeAlert();
+                showAlert('cancel', '¡Error!', err.response.data.msg);
             });
     };
 
     return (
         <Fragment>
             {
-                errorform
+                alert
                 ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="Todos los campos son requeridos" />
+                    <Alert alertType={ alert.type } alertHeader={ alert.title } alertBody={ alert.msg } />
                 :
-                errorformempty
-                ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="El id, el precio y la cantidad son requeridos" />
-                :
-                errornoexists
-                ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="No existe un producto con este id" />
-                :
-                    ''
+                    null
             }
             <section className="main-container">
                 <div className="cards">

@@ -1,14 +1,14 @@
 import React, {Fragment, useState, useEffect, useContext} from 'react';
 import AlertContext from "../../context/alerts/AlertContext";
+import clientAxios from '../../config/axios';
 import { useHistory } from 'react-router';
 import Alert from '../includes/Alert';
-import axios from 'axios';
 
 const EditarUsuario = (props) => {
 
     //HOOKS AND DESTRUCTURING
     const alertsContext = useContext(AlertContext);
-    const { errorform, showAlert, closeAlert, showError } = alertsContext;
+    const { alert, showAlert, closeAlert } = alertsContext;
 
     const { email, imageurl, name, role, status, _id } = props.location.state;
     
@@ -18,12 +18,14 @@ const EditarUsuario = (props) => {
     });
 
     useEffect(() => {
-        if (errorform) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
-    }, [errorform]);
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [alert]);
 
     let history = useHistory();
 
@@ -39,32 +41,34 @@ const EditarUsuario = (props) => {
         e.preventDefault();
 
         //Validar formulario
-        if (user.role.trim() === '' || user.status.trim() === '') {
-            return showError();
+        if (user.status.trim() === '') {
+            closeAlert();
+            showAlert('cancel', '¡Error!', 'El campo estado es requerido');
+            return ;
         }
 
         //Actualizar usuario
-        axios.patch(`http://localhost:8080/api/usuarios/${_id}`, user)
+        clientAxios.patch(`/usuarios/${_id}`, user)
             .then(res => {
-                showAlert();
+                showAlert('success', '¡Guardado!', 'Los cambios se han guardado con éxito');
                 history.push({
-                    pathname: '/usuarios',
-                    state: 'update'
+                    pathname: '/usuarios'
                 });
             })
             .catch(err => {
-                console.log(err);
+                closeAlert();
+                showAlert('cancel', '¡Error!', err.response.data.msg);
             });
     };
 
     return ( 
         <Fragment>
             {
-                errorform
+                alert
                 ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="Todos los campos son requeridos" />
+                    <Alert alertType={ alert.type } alertHeader={ alert.title } alertBody={ alert.msg } />
                 :
-                    ''
+                    null
             }
             <section className="main-container">
                 <div className="cards">
@@ -84,9 +88,11 @@ const EditarUsuario = (props) => {
                                             onChange={ changeUser }
                                             defaultValue={ user.role === 'administrador' 
                                                 ? 'administrador' 
-                                                : 'vendedor' }
+                                                : user.role === 'vendedor' 
+                                                ? 'vendedor'
+                                                : '' }
                                         >
-                                            <option>--SELECCIONE UN ROL--</option>
+                                            <option value="">--SELECCIONE UN ROL--</option>
                                             <option value="administrador">Administrador</option>
                                             <option value="vendedor">Vendedor</option>
                                         </select>
@@ -99,7 +105,6 @@ const EditarUsuario = (props) => {
                                             onChange={ changeUser }
                                             value={ user.status === 'pendiente' ? 'pendiente' : user.status === 'autorizado' ? 'autorizado' : 'no autorizado' }
                                         >
-                                            <option>--SELECCIONE UN ESTADO--</option>
                                             <option value="pendiente">Pendiente</option>
                                             <option value="autorizado">Autorizado</option>
                                             <option value="no autorizado">No autorizado</option>

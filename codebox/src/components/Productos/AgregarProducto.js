@@ -2,9 +2,9 @@ import ProductContext from '../../context/productos/ProductContext';
 import { useState, useContext, useEffect, Fragment } from 'react';
 import AlertContext from '../../context/alerts/AlertContext';
 import { useHistory } from 'react-router-dom';
+import clientAxios from '../../config/axios';
 import Alert from '../includes/Alert';
 import './AgregarProducto.css'
-import axios from 'axios';
 
 const AgregarProducto = () => {
 
@@ -13,7 +13,7 @@ const AgregarProducto = () => {
     const { addProduct } = productsContext;
 
     const alertsContext = useContext(AlertContext);
-    const { errorform, showAlert, showError, closeAlert } = alertsContext;
+    const { alert, showAlert, closeAlert } = alertsContext;
 
     const [product, setProduct] = useState({
         _id: '',
@@ -25,12 +25,14 @@ const AgregarProducto = () => {
     const { _id, description, price, status } = product; 
 
     useEffect(() => {
-        if (errorform) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
-    }, [errorform]);
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [alert]);
 
     let history = useHistory();
 
@@ -47,20 +49,22 @@ const AgregarProducto = () => {
 
         //Validar formulario
         if (_id.trim() === '' || price.trim() === '' || status.trim() === '' || description.trim() === '') {
-            return showError();
+            closeAlert();
+            showAlert('cancel', '¡Error!', 'Todos los campos son requeridos');
+            return ;
         }
 
         //Crear producto
-        axios.post('http://localhost:8080/api/productos', product)
+        clientAxios.post('/productos', product)
             .then(res => {
-                showAlert();
+                showAlert('success', '¡Guardado!', 'El registro ha sido agregado con éxito');
                 history.push({
-                    pathname: '/productos',
-                    state: 'create'
+                    pathname: '/productos'
                 });
             })
             .catch(err => {
-                console.log(err);
+                closeAlert();
+                showAlert('cancel', '¡Error!', err.response.data.msg);
             });
 
         addProduct();
@@ -69,11 +73,11 @@ const AgregarProducto = () => {
     return ( 
         <Fragment>
             {
-                errorform
+                alert
                 ?
-                    <Alert alertType="cancel" alertHeader="¡Error!" alertBody="Todos los campos son requeridos" />
+                    <Alert alertType={ alert.type } alertHeader={ alert.title } alertBody={ alert.msg } />
                 :
-                    ''
+                    null
             }
             <section className="main-container">
                 <div className="cards">

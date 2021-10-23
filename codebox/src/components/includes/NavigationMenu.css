@@ -53,11 +53,19 @@
 
 .logout-nav, .mobile-menu {
     display: flex;
+    gap: 1rem;
     align-items: center;
     margin-top: 10px;
+    font-size: .8rem;
 }
 
-.logout-nav svg {
+.logout-nav button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.logout-nav button svg {
     height: 1.5rem;
     cursor: pointer;
     color: #02040F;
@@ -66,7 +74,6 @@
 
 .logout-nav img {
     height: 2.5rem;
-    cursor: pointer;
 }
 
 .mobile-menu {

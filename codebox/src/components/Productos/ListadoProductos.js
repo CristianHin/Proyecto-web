@@ -1,12 +1,13 @@
 import ProductContext from "../../context/productos/ProductContext";
 import { Fragment, useState, useContext, useEffect } from "react";
 import AlertContext from "../../context/alerts/AlertContext";
+import clientAxios from '../../config/axios';
 import { Link } from "react-router-dom";
 import Alert from "../includes/Alert";
 import './ListadoProductos.css';
-import axios from 'axios';
 
-const Productos = (props) => {
+
+const Productos = () => {
 
     //Extraer productos del state inicial
     const productsContext = useContext(ProductContext);
@@ -21,9 +22,9 @@ const Productos = (props) => {
     //Obtener productos cuando cargue el componente
     useEffect(() => {
         const consultAPI = async () => {
-            const url = 'http://localhost:8080/api/productos';
+            //const url = 'https://code-box-api.herokuapp.com/api/productos';
     
-            const results = await axios.get(url);
+            const results = await clientAxios.get('/productos');
 
             getProducts(results.data.products);
         }
@@ -32,19 +33,21 @@ const Productos = (props) => {
     }, []);
 
     useEffect(() => {
-        if (alert) {
-            setTimeout(() => {
-                closeAlert();
-            }, 5000);
-        }
+        let timer = setTimeout(() => {
+            closeAlert();
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
     }, [alert]);
 
     //Obtener productos cuando el valor del input o select del filtro cambien
     useEffect(() => {
         const consultAPI = async (fil, opt) => {
-            const url = `http://localhost:8080/api/productos?${opt}=${fil}`;
+            //const url = `https://code-box-api.herokuapp.com/api/productos?${opt}=${fil}`;
             
-            const results = await axios.get(url);
+            const results = await clientAxios.get(`/productos?${opt}=${fil}`);
 
             getProducts(results.data.products);
         };
@@ -66,11 +69,9 @@ const Productos = (props) => {
                 alert
                 ? 
                     <Alert 
-                        alertType="success"
-                        alertHeader="¡Guardado!" 
-                        alertBody={ props.location.state === 'create' 
-                            ? 'El registro ha sido agregado con éxito' 
-                            : 'Los cambios se han guardado con éxito' } 
+                        alertType={ alert.type }
+                        alertHeader={ alert.title } 
+                        alertBody={ alert.msg } 
                     />
                 :
                     null
