@@ -19,6 +19,7 @@ const AuthState = props => {
         authenticated: null,
         user: null,
         message: null,
+        error: true,
     }
 
     //Dispatch para ejecutar las acciones
@@ -74,7 +75,7 @@ const AuthState = props => {
                 authenticated: state.authenticated,
                 user: state.user,
                 message: state.message,
-                loading: state.loading,
+                error: state.error,
                 startSession,
                 closeSession,
                 userAuthenticated

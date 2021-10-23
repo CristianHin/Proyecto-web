@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Fragment } from 'react';
 import AuthContext from '../../context/auth/AuthContext';
 import './NavigationMenu.css';
 import logo from './../Img/Codebox.jpg';
@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const NavigationMenu = () => {
 
     const authsContext = useContext(AuthContext);
-    const { user, authenticated, closeSession } = authsContext;
+    const { user, authenticated, error, closeSession } = authsContext;
 
     const [showMenu, setShowMenu] = useState(false);
 
@@ -21,12 +21,20 @@ const NavigationMenu = () => {
                 </div>
 
                 {
-                    authenticated 
+                    authenticated && !error
                     ?
                         <nav className={ !showMenu ? 'main-nav nav-hidden' : 'main-nav nav-shown' }>
                             <Link to="/ventas">Ventas</Link>
-                            <Link to="/productos">Productos</Link>
-                            <Link to="/usuarios">Usuarios</Link>
+                            {
+                                user.role === 'administrador'
+                                ?
+                                    <Fragment>
+                                        <Link to="/productos">Productos</Link>
+                                        <Link to="/usuarios">Usuarios</Link>
+                                    </Fragment>
+                                :
+                                    null
+                            }
                         </nav>
                     :
                         null
@@ -34,7 +42,7 @@ const NavigationMenu = () => {
             </div>
 
             {
-                authenticated 
+                authenticated && !error
                 ?
                     <div className="logout-nav">
                         <p><b>Hola</b>, { user.name }</p>
@@ -46,14 +54,21 @@ const NavigationMenu = () => {
                 :
                     null
             }
-            
-            <div className="mobile-menu">
-                {
-                    !showMenu 
-                    ?   <svg onClick={ () => setShowMenu(!showMenu) } fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    :   <svg onClick={ () => setShowMenu(!showMenu) } fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+
+
+            {
+                authenticated && !error
+                ?
+                    <div className="mobile-menu">
+                        {
+                            !showMenu 
+                            ?   <svg onClick={ () => setShowMenu(!showMenu) } fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            :   <svg onClick={ () => setShowMenu(!showMenu) } fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        }
+                    </div>
+                :
+                    null
                 }
-            </div>
     </header>
     )
 }

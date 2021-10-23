@@ -88,7 +88,7 @@ const ListadoUsuarios = () => {
                                                     <tr key={ user._id }>
                                                         <td>{ user._id }</td>
                                                         <td>{ user.name }</td>
-                                                        <td className="role">{ user.role }</td>
+                                                        <td className="role">{ user.role ? user.role : <b>No tiene rol</b> }</td>
                                                         <td>
                                                             <span className={ `tag-status ${ user.status == 'pendiente' ? 'pending' : user.status == 'autorizado' ? 'paid' : 'cancelled' }` }>
                                                                 { user.status == 'pendiente' ? 'pendiente' : user.status == 'autorizado' ? 'autorizado' : 'no autorizado' }

@@ -11,7 +11,7 @@ import AuthContext from "../../context/auth/AuthContext";
 const Login = (props) => {
 
   const authsContext = useContext(AuthContext);
-  const { message, authenticated, startSession } = authsContext;
+  const { message, authenticated, error, startSession } = authsContext;
 
   const alertsContext = useContext(AlertContext);
   const { alert, showAlert, closeAlert } = alertsContext;
@@ -24,10 +24,10 @@ const Login = (props) => {
   }, [message]);
 
   useEffect(() => {
-    if (authenticated) {
+    if (authenticated && !error) {
       props.history.push('/ventas');
     }
-  }, [authenticated, props.history]);
+  }, [authenticated, error, props.history]);
 
   useEffect(() => {
     let timer = setTimeout(() => {
