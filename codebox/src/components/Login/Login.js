@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect } from 'react';
 import GoogleLogin from 'react-google-login';
 import logo from './../Img/Codebox.jpg';
 import Alert from '../includes/Alert';
-import axios from 'axios';
+import clientAxios from '../../config/axios';
 import "./Login.css";
 
 import AlertContext from "../../context/alerts/AlertContext";
@@ -40,12 +40,9 @@ const Login = (props) => {
   }, [alert]);
   
   const RespuestaGoogle = (respuesta) =>{
-    axios({
-      method: "POST",
-      url: "https://code-box-api.herokuapp.com/api/googlelogin",
-      data: { tokenId: respuesta.tokenId }
-    }).then(res => {
-      startSession(res);
+    clientAxios.post('auth', { tokenId: respuesta.tokenId })
+      .then(res => {
+        startSession(res);
     });
   };
 
@@ -63,7 +60,7 @@ const Login = (props) => {
           <img src={logo} alt=""></img>
           
           <GoogleLogin
-            clientId="205955155856-abm0lv2scjct0mpql8vlq4m6l90n5k66.apps.googleusercontent.com"
+            clientId={ process.env.REACT_APP_GOOGLE_CLIENT_ID }
             buttonText="Acceder con Google"
             onSuccess={ RespuestaGoogle }
             onFailure={ RespuestaGoogle }
